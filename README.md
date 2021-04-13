@@ -54,6 +54,7 @@
 
 ### PR 규칙
 
+- [PR 방법](https://github.com/modern-javascript-study/js-workbook/blob/main/PR-EXAMPLE.md)
 - 각자 공부한 내용을 주차별로 PR합니다.
 - PR은 본인의 폴더에만 진행해주세요.
 
