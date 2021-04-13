@@ -40,6 +40,7 @@
 
 - 매주 구글밋에서 한 주 동안 공부할 토픽을 정합니다.
 - 토픽은 [모던 자바스크립트](https://ko.javascript.info/)에 나와있는대로 순차적으로 진행합니다.
+- 매주 토픽은 [Projects Todo](https://github.com/modern-javascript-study/js-workbook/projects/1)에서 확인할 수 있습니다.
 
 ### 구글밋 규칙
 
@@ -63,5 +64,6 @@
 - 자유로운 질문, 의견 표출, 지식 공유를 지향합니다.
 
 ### 기타사항
+- 자바스크립트 관련 질문은 [Discussion](https://github.com/modern-javascript-study/js-workbook/discussions)을 활용해주세요 
 
 ---
