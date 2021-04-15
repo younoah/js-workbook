@@ -63,6 +63,10 @@
 
 - 자유로운 질문, 의견 표출, 지식 공유를 지향합니다.
 
+### 마크다운 사용법
+
+- (마크다운 사용법)[https://github.com/modern-javascript-study/js-workbook/blob/main/namhyung/study.md]
+
 ### 기타사항
 - 자바스크립트 관련 질문은 [Discussion](https://github.com/modern-javascript-study/js-workbook/discussions)을 활용해주세요 
 
