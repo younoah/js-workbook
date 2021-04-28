@@ -132,7 +132,7 @@ alert(john.name); // John
 
 
 
-## [생성자와 return문](https://ko.javascript.info/constructor-new#ref-3181)
+#### [생성자와 return문](https://ko.javascript.info/constructor-new#ref-3181)
 
 생성자 함수엔 보통 `return` 문이 없다. 반환해야 할 것들은 모두 `this`에 저장되고, `this`는 자동으로 반환되기 때문에 반환문을 명시적으로 써 줄 필요가 없다.
 
