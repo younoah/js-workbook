@@ -1,4 +1,4 @@
-#### 4.5 'new' 연산자와 생성자 함수
+## 4.5 'new' 연산자와 생성자 함수
 
 객체 리터럴 `{...}` 을 사용하면 객체를 쉽게 만들 수 있다. 그런데 개발을 하다 보면 유사한 객체를 여러 개 만들어야 할 때가 생기곤 합니다. 복수의 사용자, 메뉴 내 다양한 아이템을 객체로 표현하려고 하는 경우가 그렇다.
 
@@ -8,7 +8,7 @@
 
 
 
-## [생성자 함수](https://ko.javascript.info/constructor-new#ref-3179)
+#### [생성자 함수](https://ko.javascript.info/constructor-new#ref-3179)
 
 생성자 함수(constructor function)와 일반 함수에 기술적인 차이는 없다. 다만 생성자 함수는 아래 두 관례를 따른다.
 
@@ -85,7 +85,7 @@ let user = new function() {
 
 
 
-## [new.target과 생성자 함수](https://ko.javascript.info/constructor-new#ref-3180)
+#### [new.target과 생성자 함수](https://ko.javascript.info/constructor-new#ref-3180)
 
 **심화 학습**
 
@@ -187,7 +187,7 @@ let user = new User();
 
 
 
-## [생성자 내 메서드](https://ko.javascript.info/constructor-new#ref-3182)
+#### [생성자 내 메서드](https://ko.javascript.info/constructor-new#ref-3182)
 
 생성자 함수를 사용하면 매개변수를 이용해 객체 내부를 자유롭게 구성할 수 있다. 엄청난 유연성이 확보된다..
 
@@ -235,7 +235,7 @@ john = {
 
 
 
-#### 4.6 옵셔널 체이닝 '?.'
+## 4.6 옵셔널 체이닝 '?.'
 
 >  ❗**최근에 추가됨**
 >
@@ -247,7 +247,7 @@ john = {
 
 
 
-## [옵셔널 체이닝이 필요한 이유](https://ko.javascript.info/optional-chaining#ref-3201)
+#### [옵셔널 체이닝이 필요한 이유](https://ko.javascript.info/optional-chaining#ref-3201)
 
 이제 막 자바스크립트를 배우기 시작했다면 옵셔널 체이닝이 등장하게 된 배경 상황을 직접 겪어보지 않았을 겁니다. 몇 가지 사례를 재현하면서 왜 옵셔널 체이닝이 등장했는지 알아보자.
 
@@ -336,7 +336,7 @@ user?.address;
 
 
 
-## [단락 평가](https://ko.javascript.info/optional-chaining#ref-3203)
+#### [단락 평가](https://ko.javascript.info/optional-chaining#ref-3203)
 
 `?.`는 왼쪽 평가대상에 값이 없으면 즉시 평가를 멈춘다. 참고로 이런 평가 방법을 단락 평가(short-circuit)라고 부른다.
 
@@ -416,7 +416,7 @@ user?.name = "Violet"; // SyntaxError: Invalid left-hand side in assignment
 
 
 
->## [요약](https://ko.javascript.info/optional-chaining#ref-3205)
+> #### [요약](https://ko.javascript.info/optional-chaining#ref-3205)
 >
 >옵셔널 체이닝 문법 `?.`은 세 가지 형태로 사용할 수 있다.
 >
