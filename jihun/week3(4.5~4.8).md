@@ -355,7 +355,7 @@ alert(x); // 0, x는 증가하지 않습니다.
 
 
 
-## [?.()와 ?.[\]](https://ko.javascript.info/optional-chaining#ref-3204)
+#### [?.()와 ?.[\]](https://ko.javascript.info/optional-chaining#ref-3204)
 
 `?.`은 연산자가 아닙니다. `?.`은 함수나 대괄호와 함께 동작하는 특별한 문법 구조체(syntax construct)이다.
 
