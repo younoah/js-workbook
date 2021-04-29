@@ -8,7 +8,7 @@
 
 
 
-## [생성자 함수](https://ko.javascript.info/constructor-new#ref-3179)
+#### [생성자 함수](https://ko.javascript.info/constructor-new#ref-3179)
 
 생성자 함수(constructor function)와 일반 함수에 기술적인 차이는 없다. 다만 생성자 함수는 아래 두 관례를 따른다.
 
@@ -85,7 +85,7 @@ let user = new function() {
 
 
 
-## [new.target과 생성자 함수](https://ko.javascript.info/constructor-new#ref-3180)
+#### [new.target과 생성자 함수](https://ko.javascript.info/constructor-new#ref-3180)
 
 **심화 학습**
 
@@ -132,7 +132,7 @@ alert(john.name); // John
 
 
 
-## [생성자와 return문](https://ko.javascript.info/constructor-new#ref-3181)
+#### [생성자와 return문](https://ko.javascript.info/constructor-new#ref-3181)
 
 생성자 함수엔 보통 `return` 문이 없다. 반환해야 할 것들은 모두 `this`에 저장되고, `this`는 자동으로 반환되기 때문에 반환문을 명시적으로 써 줄 필요가 없다.
 
@@ -187,7 +187,7 @@ let user = new User();
 
 
 
-## [생성자 내 메서드](https://ko.javascript.info/constructor-new#ref-3182)
+#### [생성자 내 메서드](https://ko.javascript.info/constructor-new#ref-3182)
 
 생성자 함수를 사용하면 매개변수를 이용해 객체 내부를 자유롭게 구성할 수 있다. 엄청난 유연성이 확보된다..
 
@@ -220,7 +220,7 @@ john = {
 
 
 
->## [요약](https://ko.javascript.info/constructor-new#ref-3183)
+>#### [요약](https://ko.javascript.info/constructor-new#ref-3183)
 >
 >- 생성자 함수(짧게 줄여서 생성자)는 일반 함수이다. 다만, 일반 함수와 구분하기 위해 함수 이름 첫 글자를 대문자로 쓴다.
 >- 생성자 함수는 반드시 `new` 연산자와 함께 호출해야 한다. `new`와 함께 호출하면 내부에서 `this`가 암시적으로 만들어지고, 마지막엔 `this`가 반환된다.
@@ -228,6 +228,7 @@ john = {
 >유사한 객체를 여러 개 만들 때 생성자 함수가 유용하다.
 >
 >자바스크립트는 언어 차원에서 다양한 생성자 함수를 제공한다. 날짜를 나타내는 데 쓰이는 `Date`, 집합(set)을 나타내는 데 쓰이는 `Set` 등의 내장 객체는 이런 생성자 함수를 이용해 만들 수 있다. 
+
 
 
 
@@ -245,7 +246,7 @@ john = {
 
 
 
-## [옵셔널 체이닝이 필요한 이유](https://ko.javascript.info/optional-chaining#ref-3201)
+#### [옵셔널 체이닝이 필요한 이유](https://ko.javascript.info/optional-chaining#ref-3201)
 
 이제 막 자바스크립트를 배우기 시작했다면 옵셔널 체이닝이 등장하게 된 배경 상황을 직접 겪어보지 않았을 겁니다. 몇 가지 사례를 재현하면서 왜 옵셔널 체이닝이 등장했는지 알아보자.
 
@@ -280,7 +281,7 @@ alert( user && user.address && user.address.street ); // undefined, 에러가 �
 
 
 
-## [옵셔널 체이닝의 등장](https://ko.javascript.info/optional-chaining#ref-3202)
+#### [옵셔널 체이닝의 등장](https://ko.javascript.info/optional-chaining#ref-3202)
 
 `?.`은 `?.`'앞’의 평가 대상이 `undefined`나 `null`이면 평가를 멈추고 `undefined`를 반환합니다.
 
@@ -334,7 +335,7 @@ user?.address;
 
 
 
-## [단락 평가](https://ko.javascript.info/optional-chaining#ref-3203)
+#### [단락 평가](https://ko.javascript.info/optional-chaining#ref-3203)
 
 `?.`는 왼쪽 평가대상에 값이 없으면 즉시 평가를 멈춘다. 참고로 이런 평가 방법을 단락 평가(short-circuit)라고 부른다.
 
@@ -353,7 +354,7 @@ alert(x); // 0, x는 증가하지 않습니다.
 
 
 
-## [?.()와 ?.[\]](https://ko.javascript.info/optional-chaining#ref-3204)
+#### [?.()와 ?.[\]](https://ko.javascript.info/optional-chaining#ref-3204)
 
 `?.`은 연산자가 아닙니다. `?.`은 함수나 대괄호와 함께 동작하는 특별한 문법 구조체(syntax construct)이다.
 
@@ -414,7 +415,7 @@ user?.name = "Violet"; // SyntaxError: Invalid left-hand side in assignment
 
 
 
->## [요약](https://ko.javascript.info/optional-chaining#ref-3205)
+> #### [요약](https://ko.javascript.info/optional-chaining#ref-3205)
 >
 >옵셔널 체이닝 문법 `?.`은 세 가지 형태로 사용할 수 있다.
 >
@@ -444,7 +445,7 @@ user?.name = "Violet"; // SyntaxError: Invalid left-hand side in assignment
 
 
 
-## [심볼](https://ko.javascript.info/symbol#ref-822)
+#### [심볼](https://ko.javascript.info/symbol#ref-822)
 
 '심볼(symbol)'은 유일한 식별자(unique identifier)를 만들고 싶을 때 사용하며, `Symbol()`을 사용하면 심볼값을 만들 수 있다.
 
@@ -506,7 +507,7 @@ alert(id.description); // id
 
 
 
-##  [‘숨김’ 프로퍼티](https://ko.javascript.info/symbol#ref-823)
+####  [‘숨김’ 프로퍼티](https://ko.javascript.info/symbol#ref-823)
 
 심볼을 이용하면 ‘숨김(hidden)’ 프로퍼티를 만들 수 있다. 숨김 프로퍼티는 외부 코드에서 접근이 불가능하고 값도 덮어쓸 수 없는 프로퍼티이다.
 
@@ -561,7 +562,7 @@ user.id = "제3 스크립트 id 값"
 
 
 
-### [Symbols in a literal](https://ko.javascript.info/symbol#ref-824)
+#### [Symbols in a literal](https://ko.javascript.info/symbol#ref-824)
 
 객체 리터럴 `{...}`을 사용해 객체를 만든 경우, 대괄호를 사용해 심볼형 키를 만들어야 한다.
 
@@ -580,7 +581,7 @@ let user = {
 
 
 
-### [심볼은 for…in 에서 배제된다](https://ko.javascript.info/symbol#ref-825)
+#### [심볼은 for…in 에서 배제된다](https://ko.javascript.info/symbol#ref-825)
 
 키가 심볼인 프로퍼티는 `for..in` 반복문에서 배제된다.
 
@@ -619,7 +620,7 @@ alert( clone[id] ); // 123
 
 
 
-## [전역 심볼](https://ko.javascript.info/symbol#ref-826)
+#### [전역 심볼](https://ko.javascript.info/symbol#ref-826)
 
 앞서 살펴본 것처럼, 심볼은 이름이 같더라도 모두 별개로 취급된다. 그런데 이름이 같은 심볼이 같은 개체를 가리키길 원하는 경우도 가끔 있다. 애플리케이션 곳곳에서 심볼 `"id"`를 이용해 특정 프로퍼티에 접근해야 한다고 가정해 보자.
 
@@ -648,7 +649,7 @@ alert( id === idAgain ); // true
 
 
 
-### [Symbol.keyFor](https://ko.javascript.info/symbol#ref-827)
+#### [Symbol.keyFor](https://ko.javascript.info/symbol#ref-827)
 
 전역 심볼을 찾을 때 사용되는 `Symbol.for(key)`에 반대되는 메서드도 있다. `Symbol.keyFor(sym)`를 사용하면 이름을 얻을 수 있다.
 
@@ -680,7 +681,7 @@ alert( localSymbol.description ); // name
 
 
 
-## [시스템 심볼](https://ko.javascript.info/symbol#ref-828)
+#### [시스템 심볼](https://ko.javascript.info/symbol#ref-828)
 
 '시스템 심볼(system symbol)'은 자바스크립트 내부에서 사용되는 심볼이다. 시스템 심볼을 활용하면 객체를 미세 조정할 수 있다.
 
@@ -694,7 +695,7 @@ alert( localSymbol.description ); // name
 
 
 
->## [요약](https://ko.javascript.info/symbol#ref-829)
+>#### [요약](https://ko.javascript.info/symbol#ref-829)
 >
 >`Symbol`은 원시형 데이터로, 유일무이한 식별자를 만드는 데 사용된다.
 >
@@ -732,7 +733,7 @@ alert( localSymbol.description ); // name
 
 
 
-## [ToPrimitive](https://ko.javascript.info/object-toprimitive#ref-689)
+#### [ToPrimitive](https://ko.javascript.info/object-toprimitive#ref-689)
 
 특수 객체 메서드를 사용하면 숫자형이나 문자형으로의 형 변환을 원하는 대로 조절할 수 있다.
 
@@ -790,7 +791,7 @@ hint는 총 세 가지이다. 아주 간단하다.
 
 
 
-## [Symbol.toPrimitive](https://ko.javascript.info/object-toprimitive#ref-690)
+#### [Symbol.toPrimitive](https://ko.javascript.info/object-toprimitive#ref-690)
 
 첫 번째 메서드부터 살펴보자. 자바스크립트엔 `Symbol.toPrimitive`라는 내장 심볼이 존재하는데, 이 심볼은 아래와 같이 목표로 하는 자료형(hint)을 명명하는 데 사용된다.
 
@@ -826,7 +827,7 @@ alert(user + 500); // hint: default -> 1500
 
 
 
-## [toString과 valueOf](https://ko.javascript.info/object-toprimitive#ref-691)
+#### [toString과 valueOf](https://ko.javascript.info/object-toprimitive#ref-691)
 
 `toString`과 `valueOf`는 심볼이 생기기 이전부터 존재해 왔던 ‘평범한’ 메서드이다. 이 메서드를 이용하면 '구식’이긴 하지만 형 변환을 직접 구현할 수 있다.
 
@@ -904,7 +905,7 @@ alert(user + 500); // toString -> John500
 
 
 
-## [반환 타입](https://ko.javascript.info/object-toprimitive#ref-692)
+#### [반환 타입](https://ko.javascript.info/object-toprimitive#ref-692)
 
 위에서 소개해드린 세 개의 메서드는 'hint’에 명시된 자료형으로의 형 변환을 보장해 주지 않는다.
 
@@ -922,7 +923,7 @@ alert(user + 500); // toString -> John500
 
 
 
-## [추가 형 변환](https://ko.javascript.info/object-toprimitive#ref-693)
+#### [추가 형 변환](https://ko.javascript.info/object-toprimitive#ref-693)
 
 지금까지 살펴본 바와 같이 상당수의 연산자와 함수가 피연산자의 형을 변환시킨다. 곱셈을 해주는 연산자 `*`는 피연산자를 숫자형으로 변환시킨다.
 
@@ -963,7 +964,7 @@ alert(obj + 2); // 22("2" + 2), 문자열이 반환되기 때문에 문자열끼
 
 
 
-> ## [요약](https://ko.javascript.info/object-toprimitive#ref-694)
+> #### [요약](https://ko.javascript.info/object-toprimitive#ref-694)
 >
 > 원시값을 기대하는 내장 함수나 연산자를 사용할 때 객체-원시형으로의 형 변환이 자동으로 일어난다.
 >
