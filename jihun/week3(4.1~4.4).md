@@ -1,5 +1,7 @@
 ### 객체: 기본
 
+
+
 #### 4.1 객체
 
 자바스크립트엔 여덟 가지 자료형(<u>숫자형, bigint형, 문자형, 불린형, 객체형, Null형, Undefined형, 심볼형</u>)이 있다. **이 중 일곱 개는 오직 하나의 데이터(문자열, 숫자 등)만 담을 수 있어 '원시형(primitive type)'이라 부른다.**
@@ -23,7 +25,11 @@ let user = {};  // '객체 리터럴' 문법
 
 **중괄호 `{...}`를 이용해 객체를 선언하는 것을 *객체 리터럴(object literal)* 이라고 부른다.** 객체를 선언할 땐 주로 이 방법을 사용한다.
 
-## [리터럴과 프로퍼티](https://ko.javascript.info/object#ref-1236)
+
+
+
+
+#### 리터럴과 프로퍼티
 
 중괄호 `{...}` 안에는 ‘키: 값’ 쌍으로 구성된 프로퍼티가 들어간다.
 
@@ -116,7 +122,9 @@ alert(user.name); // Pete
 
 
 
-## [대괄호 표기법](https://ko.javascript.info/object#ref-1237)
+
+
+#### 대괄호 표기법
 
 여러 단어를 조합해 프로퍼티 키를 만든 경우엔, 점 표기법을 사용해 프로퍼티 값을 읽을 수 없다.
 
@@ -185,7 +193,9 @@ alert( user.key ) // undefined
 
 
 
-### [계산된 프로퍼티](https://ko.javascript.info/object#ref-1238)
+
+
+#### 계산된 프로퍼티
 
 객체를 만들 때 객체 리터럴 안의 프로퍼티 키가 대괄호로 둘러싸여 있는 경우, 이를 *계산된 프로퍼티(computed property)* 라고 부른다.
 
@@ -232,7 +242,7 @@ let bag = {
 
 
 
-## [단축 프로퍼티](https://ko.javascript.info/object#ref-1239)
+#### 단축 프로퍼티
 
 실무에선 프로퍼티 값을 기존 변수에서 받아와 사용하는 경우가 종종 있다.
 
@@ -276,7 +286,9 @@ let user = {
 
 
 
-## [프로퍼티 이름의 제약사항](https://ko.javascript.info/object#ref-1240)
+
+
+#### 프로퍼티 이름의 제약사항
 
 아시다시피 변수 이름(키)엔 ‘for’, ‘let’, ‘return’ 같은 예약어를 사용하면 안된다.
 
@@ -325,7 +337,9 @@ alert(obj.__proto__); // [object Object] - 숫자를 할당했지만 값은 객�
 
 
 
-## [‘in’ 연산자로 프로퍼티 존재 여부 확인하기](https://ko.javascript.info/object#ref-1241)
+
+
+#### ‘in’ 연산자로 프로퍼티 존재 여부 확인하기
 
 자바스크립트 객체의 중요한 특징 중 하나는 다른 언어와는 달리, 존재하지 않는 프로퍼티에 접근하려 해도 에러가 발생하지 않고 `undefined`를 반환한다는 것이다.
 
@@ -387,11 +401,11 @@ alert( "test" in obj ); // `in`을 사용하면 프로퍼티 유무를 제대로
 
 
 
-## [‘for…in’ 반복문](https://ko.javascript.info/object#ref-1242)
+
+
+#### ‘for…in’ 반복문
 
 `for..in` 반복문을 사용하면 객체의 모든 키를 순회할 수 있다. `for..in`은 앞서 학습했던 `for(;;)` 반복문과는 완전히 다르다.
-
-문법:
 
 ```javascript
 for (key in object) {
@@ -424,7 +438,7 @@ for (let key in user) {
 
 
 
-### [객체 정렬 방식](https://ko.javascript.info/object#ref-1243)
+#### 객체 정렬 방식
 
 객체와 객체 프로퍼티를 다루다 보면 "프로퍼티엔 순서가 있을까?"라는 의문이 생기기 마련인데 반복문은 프로퍼티를 추가한 순서대로 실행될지, 그리고 이 순서는 항상 동일할지 궁금해진다.
 
@@ -603,7 +617,7 @@ alert(user.name); // 'Pete'가 출력됨. 'user' 참조 값을 이용해 변경�
 
 
 
-### [참조에 의한 비교](https://ko.javascript.info/object-copy#ref-2824)
+#### 참조에 의한 비교
 
 객체 비교 시, **동등 연산자 `==`와 일치 연산자 `===`는 동일하게 동작한다.**
 
@@ -636,7 +650,9 @@ alert( a == b ); // false
 
 
 
-## [객체 복사, 병합과 Object.assign](https://ko.javascript.info/object-copy#ref-2825)
+
+
+#### 객체 복사, 병합과 Object.assign
 
 객체가 할당된 변수를 복사하면 동일한 객체에 대한 참조 값이 하나 더 만들어진다는 걸 배웠다.
 
@@ -721,7 +737,7 @@ let clone = Object.assign({}, user);
 
 
 
-## [중첩 객체 복사](https://ko.javascript.info/object-copy#ref-2826)
+#### 중첩 객체 복사
 
 지금까진 `user`의 모든 프로퍼티가 원시값인 경우만 가정했는데, 프로퍼티는 다른 객체에 대한 참조 값일 수도 있다. 이 경우는 어떻게 해야 할까?
 
@@ -767,19 +783,19 @@ alert(clone.sizes.width); // 51, 다른 객체에서 변경 사항을 확인할 
 
 
 
->## [요약](https://ko.javascript.info/object-copy#ref-2827)
+> #### 요약
 >
->객체는 참조에 의해 할당되고 복사된다. 변수엔 ‘객체’ 자체가 아닌 메모리상의 주소인 '참조’가 저장된다. 따라서 객체가 할당된 변수를 복사하거나 함수의 인자로 넘길 땐 객체가 아닌 객체의 참조가 복사된다.
+> 객체는 참조에 의해 할당되고 복사된다. 변수엔 ‘객체’ 자체가 아닌 메모리상의 주소인 '참조’가 저장된다. 따라서 객체가 할당된 변수를 복사하거나 함수의 인자로 넘길 땐 객체가 아닌 객체의 참조가 복사된다.
 >
->그리고 복사된 참조를 이용한 모든 작업(프로퍼티 추가·삭제 등)은 동일한 객체를 대상으로 이뤄진다.
+> 그리고 복사된 참조를 이용한 모든 작업(프로퍼티 추가·삭제 등)은 동일한 객체를 대상으로 이뤄진다.
 >
->객체의 '진짜 복사본’을 만들려면 '얕은 복사(shallow copy)'를 가능하게 해주는 `Object.assign`이나 '깊은 복사’를 가능하게 해주는 [_.cloneDeep(obj)](https://lodash.com/docs#cloneDeep)를 사용하면 된다. 이때 얕은 복사본은 중첩 객체를 처리하지 못한다는 점을 기억해 두자.
+> 객체의 '진짜 복사본’을 만들려면 '얕은 복사(shallow copy)'를 가능하게 해주는 `Object.assign`이나 '깊은 복사’를 가능하게 해주는 [_.cloneDeep(obj)](https://lodash.com/docs#cloneDeep)를 사용하면 된다. 이때 얕은 복사본은 중첩 객체를 처리하지 못한다는 점을 기억해 두자.
 
 
 
 
 
-#### 4.3 가비지 컬렉션
+## 4.3 가비지 컬렉션
 
 자바스크립트는 눈에 보이지 않는 곳에서 메모리 관리를 수행한다.
 
@@ -789,7 +805,7 @@ alert(clone.sizes.width); // 51, 다른 객체에서 변경 사항을 확인할 
 
 
 
-## [가비지 컬렉션 기준](https://ko.javascript.info/garbage-collection#ref-3018)
+#### 가비지 컬렉션 기준
 
 자바스크립트는 *도달 가능성(reachability)* 이라는 개념을 사용해 메모리 관리를 수행한다.
 
@@ -814,7 +830,7 @@ alert(clone.sizes.width); // 51, 다른 객체에서 변경 사항을 확인할 
 
 
 
-## [간단한 예시](https://ko.javascript.info/garbage-collection#ref-3019)
+#### 간단한 예시
 
 ```javascript
 // user엔 객체 참조 값이 저장된다.
@@ -841,7 +857,7 @@ user = null;
 
 
 
-## [참조 두 개](https://ko.javascript.info/garbage-collection#ref-3020)
+#### 참조 두 개
 
 참조를 `user`에서 `admin`으로 복사했다고 가정해보자.
 
@@ -868,7 +884,7 @@ user = null;
 
 
 
-## [연결된 객체](https://ko.javascript.info/garbage-collection#ref-3021)
+#### 연결된 객체
 
 이제 가족관계를 나타내는 복잡한 예시를 살펴보겠다.
 
@@ -917,7 +933,9 @@ delete family.mother.husband;
 
 
 
-## [도달할 수 없는 섬](https://ko.javascript.info/garbage-collection#ref-3022)
+
+
+#### 도달할 수 없는 섬
 
 객체들이 연결되어 섬 같은 구조를 만드는데, 이 섬에 도달할 방법이 없는 경우, 섬을 구성하는 객체 전부가 메모리에서 삭제된다. 
 
@@ -939,7 +957,7 @@ John과 Ann은 여전히 서로를 참조하고 있고, 두 객체 모두 외부
 
 
 
-## [내부 알고리즘](https://ko.javascript.info/garbage-collection#ref-3023)
+#### 내부 알고리즘
 
 'mark-and-sweep’이라 불리는 가비지 컬렉션 기본 알고리즘에 대해 알아보자.
 
@@ -987,7 +1005,7 @@ John과 Ann은 여전히 서로를 참조하고 있고, 두 객체 모두 외부
 
 
 
->## [요약](https://ko.javascript.info/garbage-collection#ref-3024)
+>#### 요약
 >
 >지금까지 알아본 내용을 요약해 보자.
 >
@@ -1009,7 +1027,9 @@ John과 Ann은 여전히 서로를 참조하고 있고, 두 객체 모두 외부
 
 
 
-#### 4.4 메서드와 'this'
+
+
+## 4.4 메서드와 'this'
 
 객체는 사용자(user), 주문(order) 등과 같이 실제 존재하는 개체(entity)를 표현하고자 할 때 생성된다.
 
@@ -1028,7 +1048,7 @@ let user = {
 
 
 
-## [메서드 만들기](https://ko.javascript.info/object-methods#ref-2690)
+#### 메서드 만들기
 
 객체 `user`에게 인사할 수 있는 능력을 부여해 보자.
 
@@ -1083,9 +1103,9 @@ OOP는 그 자체만으로도 학문의 분야를 만드는 중요한 주제이�
 
 
 
-### [메서드 단축 구문](https://ko.javascript.info/object-methods#ref-2691)
+#### 메서드 단축 구문
 
-객체 리터럴 안에 메서드를 선언할 때 사용할 수 있는 단축 문법을 소개해본다.
+객체 리터럴 안에 메서드를 선언할 때 사용할 수 있는 단축 문법은 아래와 같다.
 
 ```javascript
 // 아래 두 객체는 동일하게 동작한다.
@@ -1112,7 +1132,7 @@ user = {
 
 
 
-## [메서드와 ‘this’](https://ko.javascript.info/object-methods#ref-2692)
+#### 메서드와 ‘this’
 
 메서드는 객체에 저장된 정보에 접근할 수 있어야 제 역할을 할 수 있다. 모든 메서드가 그런 건 아니지만, 대부분의 메서드가 객체 프로퍼티의 값을 활용한다.
 
@@ -1121,8 +1141,6 @@ user = {
 **메서드 내부에서 `this` 키워드를 사용하면 객체에 접근할 수 있다.**
 
 이때 '점 앞’의 `this`는 객체를 나타냅니다. 정확히는 메서드를 호출할 때 사용된 객체를 나타낸다.
-
-
 
 ```javascript
 let user = {
@@ -1155,9 +1173,9 @@ let user = {
 };
 ```
 
+
+
 그런데 이렇게 외부 변수를 사용해 객체를 참조하면 예상치 못한 에러가 발생할 수 있다. `user`를 복사해 다른 변수에 할당(`admin = user`)하고, `user`는 전혀 다른 값으로 덮어썼다고 가정해 보자. `sayHi()`는 원치 않는 값(null)을 참조할 것이다.
-
-
 
 ```javascript
 let user = {
@@ -1183,7 +1201,7 @@ admin.sayHi(); // sayHi()가 엉뚱한 객체를 참고하면서 에러가 발�
 
 
 
-## [자유로운 “this”](https://ko.javascript.info/object-methods#ref-2693)
+#### 자유로운 “this”
 
 자바스크립트의 `this`는 다른 프로그래밍 언어의 `this`와 동작 방식이 다릅니다. 자바스크립트에선 모든 함수에 `this`를 사용할 수 있다.
 
@@ -1257,7 +1275,7 @@ sayHi(); // undefined
 
 
 
-## ['this’가 없는 화살표 함수](https://ko.javascript.info/object-methods#ref-2694)
+#### 'this’가 없는 화살표 함수
 
 화살표 함수는 일반 함수와는 달리 ‘고유한’ `this`를 가지지 않는다. 화살표 함수에서 `this`를 참조하면, 화살표 함수가 아닌 ‘평범한’ 외부 함수에서 `this` 값을 가져온다.
 
@@ -1279,7 +1297,7 @@ user.sayHi(); // 보라
 
 
 
->## [요약](https://ko.javascript.info/object-methods#ref-2695)
+>#### 요약
 >
 >- 객체 프로퍼티에 저장된 함수를 '메서드’라고 부른다.
 >- `object.doSomthing()`은 객체를 '행동’할 수 있게 해준다.
