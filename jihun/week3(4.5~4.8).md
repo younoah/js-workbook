@@ -775,11 +775,11 @@ alert( localSymbol.description ); // name
 
 ## 4.8 객체를 원시형으로 변환하기
 
-`obj1 + obj2` 처럼 객체끼리 더하는 연산을 하거나, `obj1 - obj2` 처럼 객체끼리 빼는 연산을 하면 어떤 일이 일어날까? `alert(obj)`로 객체를 출력할 때는 무슨 일이 발생할까?
+`obj1 + obj2` 처럼 객체끼리 더하는 연산을 하거나, `obj1 - obj2` 처럼 객체끼리 빼는 연산을 하면 어떤 일이 일어날까? 또한, `alert(obj)`로 객체를 출력할 때는 무슨 일이 발생할까?
 
-이 모든 경우에 자동 형 변환이 일어난다. 객체는 원시값으로 변환되고, 그 후 의도한 연산이 수행된다.
+이 모든 경우에 **자동 형 변환이 일어난다.** 객체는 원시값으로 변환되고, 그 후 의도한 연산이 수행된다.
 
-1. 객체는 논리 평가 시 `true`를 반환한다. 단 하나의 예외도 없다. 따라서 객체는 숫자형이나 문자형으로만 형 변환이 일어난다고 생각하면 된다.
+1. 단 하나의 예외도 없이 객체는 논리 평가 시 `true`를 반환한다. 따라서 **객체는 숫자형이나 문자형으로만 형 변환이 일어난다**고 생각하면 된다.
 2. 숫자형으로의 형 변환은 객체끼리 빼는 연산을 할 때나 수학 관련 함수를 적용할 때 일어난다. 객체 `Date`끼리 차감하면(`date1 - date2`) 두 날짜의 시간 차이가 반환된다. 
 3. 문자형으로의 형 변환은 대개 `alert(obj)`같이 객체를 출력하려고 할 때 일어난다.
 
@@ -787,7 +787,7 @@ alert( localSymbol.description ); // name
 
 
 
-#### [ToPrimitive](https://ko.javascript.info/object-toprimitive#ref-689)
+#### ToPrimitive
 
 특수 객체 메서드를 사용하면 숫자형이나 문자형으로의 형 변환을 원하는 대로 조절할 수 있다.
 
@@ -804,6 +804,8 @@ alert( localSymbol.description ); // name
 - `"default"`
 
   연산자가 기대하는 자료형이 ‘확실치 않을 때’ hint는 `default`가 된다. 아주 드물게 발생한다.이항 덧셈 연산자 `+`는 피연산자의 자료형에 따라 문자열을 합치는 연산을 할 수도 있고 숫자를 더해주는 연산을 할 수도 있다. 따라서 `+`의 인수가 객체일는 hint가 `default`가 된다.동등 연산자 `==`를 사용해 객체-문자형, 객체-숫자형, 객체-심볼형끼리 비교할 때도, 객체를 어떤 자료형으로 바꿔야 할지 확신이 안 서므로 hint는 default가 된다.`// 이항 덧셈 연산은 hint로 `default`를 사용합니다. let total = obj1 + obj2; // obj == number 연산은 hint로 `default`를 사용한다. if (user == 1) { ... };`크고 작음을 비교할 때 쓰이는 연산자 `<`, `>` 역시 피연산자에 문자형과 숫자형 둘 다를 허용하는데, 이 연산자들은 hint를 'number’로 고정한다. hint가 'default’가 되는 일이 없다. 이는 하위 호환성 때문에 정해진 규칙이다.실제 일을 할 때는 이런 사항을 모두 외울 필요는 없다. `Date` 객체를 제외한 모든 내장 객체는 hint가 `"default"`인 경우와 `"number"`인 경우를 동일하게 처리하기 때문이다. 우리도 커스텀 객체를 만들 땐 이런 규칙을 따르면 된다.
+
+
 
 **`"boolean"` hint는 없다.**
 
@@ -845,7 +847,7 @@ hint는 총 세 가지이다. 아주 간단하다.
 
 
 
-#### [Symbol.toPrimitive](https://ko.javascript.info/object-toprimitive#ref-690)
+#### Symbol.toPrimitive
 
 첫 번째 메서드부터 살펴보자. 자바스크립트엔 `Symbol.toPrimitive`라는 내장 심볼이 존재하는데, 이 심볼은 아래와 같이 목표로 하는 자료형(hint)을 명명하는 데 사용된다.
 
@@ -881,7 +883,7 @@ alert(user + 500); // hint: default -> 1500
 
 
 
-#### [toString과 valueOf](https://ko.javascript.info/object-toprimitive#ref-691)
+#### toString과 valueOf
 
 `toString`과 `valueOf`는 심볼이 생기기 이전부터 존재해 왔던 ‘평범한’ 메서드이다. 이 메서드를 이용하면 '구식’이긴 하지만 형 변환을 직접 구현할 수 있다.
 
@@ -959,7 +961,7 @@ alert(user + 500); // toString -> John500
 
 
 
-#### [반환 타입](https://ko.javascript.info/object-toprimitive#ref-692)
+#### 반환 타입
 
 위에서 소개해드린 세 개의 메서드는 'hint’에 명시된 자료형으로의 형 변환을 보장해 주지 않는다.
 
@@ -977,7 +979,7 @@ alert(user + 500); // toString -> John500
 
 
 
-#### [추가 형 변환](https://ko.javascript.info/object-toprimitive#ref-693)
+#### 추가 형 변환
 
 지금까지 살펴본 바와 같이 상당수의 연산자와 함수가 피연산자의 형을 변환시킨다. 곱셈을 해주는 연산자 `*`는 피연산자를 숫자형으로 변환시킨다.
 
@@ -1018,7 +1020,7 @@ alert(obj + 2); // 22("2" + 2), 문자열이 반환되기 때문에 문자열끼
 
 
 
-> #### [요약](https://ko.javascript.info/object-toprimitive#ref-694)
+> #### 요약
 >
 > 원시값을 기대하는 내장 함수나 연산자를 사용할 때 객체-원시형으로의 형 변환이 자동으로 일어난다.
 >
