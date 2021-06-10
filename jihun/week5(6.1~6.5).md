@@ -421,8 +421,6 @@ let arr = [obj1, obj2, obj3];
 - `value`
 - `next`: 다음 *연결 리스트 요소*를 참조하는 프로퍼티. 다음 요소가 없을 땐 `null`이 된다.
 
-
-
 ```javascript
 let list = {
   value: 1,
@@ -1632,6 +1630,8 @@ if (!window.Promise) {
   window.Promise = ... // 모던 자바스크립트에서 지원하는 기능을 직접 구현함
 }
 ```
+
+
 
 
 
