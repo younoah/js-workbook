@@ -1,8 +1,6 @@
 ## 6.1 재귀와 스택
 
-함수 심화학습, 첫 번째 주제는 *재귀(recursion)* 이다.
-
-**재귀는 큰 목표 작업 하나를 동일하면서 간단한 작업 여러 개로 나눌 수 있을 때 유용한 프로그래밍 패턴**이며, **목표 작업을  간단한 동작 하나와 목표 작업을 변형한 작업으로 단순화시킬 수 있을 때**도 재귀를 사용할 수 있다. 곧 살펴보겠지만, **특정  자료구조를 다뤄야 할 때도 재귀가 사용**된다.
+**재귀(recursion)는 큰 목표 작업 하나를 동일하면서 간단한 작업 여러 개로 나눌 수 있을 때 유용한 프로그래밍 패턴**이며, **목표 작업을  간단한 동작 하나와 목표 작업을 변형한 작업으로 단순화시킬 수 있을 때**도 재귀를 사용할 수 있다. 곧 살펴보겠지만, **특정  자료구조를 다뤄야 할 때도 재귀가 사용**된다.
 
 문제 해결을 하다 보면 함수에서 다른 함수를 호출해야 할 때가 있다. **이때 함수가 *자기 자신*을 호출할 수도 있는데, 이를 *재귀* 라고 부르기 때문에 꼭 기억하자.**
 
@@ -20,7 +18,7 @@ pow(2, 4) = 16
 
 구현하는 방법은 두 가지가 있다.
 
-1. 반복적인 사고를 통한 방법: `for` 루프
+1. **반복적인 사고를 통한 방법**: `for` 루프
 
 ```javascript
 function pow(x, n) {
@@ -39,7 +37,7 @@ alert( pow(2, 3) ); // 8
 
 
 
-2. 재귀적인 사고를 통한 방법: 작업을 단순화하고 자기 자신을 호출함
+2. **재귀적인 사고를 통한 방법**: 작업을 단순화하고 자기 자신을 호출함
 
 ```javascript
 function pow(x, n) {
@@ -309,10 +307,14 @@ let company = {
 - 하위 부서가 커지면 더 작은 단위의 하위 부서(또는 팀)로 쪼개질 가능성도 있다.
 
   `sites` 부서는 미래에 `siteA`와 `siteB`로 나뉠 수 있다. 이렇게 나눠진 부서가 미래에 더 세분화될 수도 있다. 미래에 벌어질 일까진 나타내지 않았지만, 이러한 가능성도 있다는 걸 염두에 두어야 한다.
+  
+  
 
 자, 이제 모든 임직원의 급여를 더한 값을 구해야 한다고 해보자. 어떻게 할 수 있을까?
 
 구조가 단순하지 않기 때문에 반복문을 사용해선 구하기 쉽지 않아 보인다. 가장 먼저 떠오르는 생각은 `company`를 대상으로 동작하는 `for` 반복문을 만들고 한 단계 아래의 부서에 중첩 반복문를 돌리는 걸거다. 그런데 이렇게 하면 `sites` 같은 두 단계 아래의 부서에 속한 임직원의 급여를 뽑아낼 때 또 다른 중첩 반복문이 필요하다. 세 단계 아래의 부서가 미래에  만들어진다고 가정하면 또 다른 중첩 반복문이 필요하겠다. 얼마만큼의 깊이까지 중첩 반복문을 만들 수 있을까? 객체를 순회하는  중첩 반복문의 깊이가 3~4개가 되는 순간 코드는 정말 지저분해질 것이다.
+
+
 
 재귀를 이용한 풀이법을 시도해 보자.
 
@@ -361,7 +363,7 @@ alert(sumSalaries(company)); // 7700
 
 아래는 호출이 어떻게 일어나는지를 나타낸 그림이다.
 
-![Screen Shot 2021-06-11 at 4.08.43 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.08.43 PM.png) 
+![Screen Shot 2021-06-11 at 4 08 43 PM](https://user-images.githubusercontent.com/79819941/121648053-0887ea00-cad2-11eb-915f-d8d50cbbe942.png)  
 
 그림을 보면 규칙을 쉽게 확인할 수 있다. 객체 `{...}`를 만나면 서브 호출이 만들어지는 반면, 배열 `[...]`을 만나면 더 이상의 서브 호출이 만들어지지 않고 결과가 바로 계산된다.
 
@@ -439,7 +441,11 @@ let list = {
 
 
 
-위 연결 리스트를 그림으로 표현하면 다음과 같다.![Screen Shot 2021-05-08 at 11 39 33 AM](https://user-images.githubusercontent.com/79819941/117527688-d4b83100-b008-11eb-912f-cd67bb88ca8b.png) 
+위 연결 리스트를 그림으로 표현하면 다음과 같다.
+
+
+
+![Screen Shot 2021-05-08 at 11 39 33 AM](https://user-images.githubusercontent.com/79819941/117527688-d4b83100-b008-11eb-912f-cd67bb88ca8b.png)
 
 
 
@@ -1012,7 +1018,7 @@ alert( counter() ); // 2
 
 아래 두 줄짜리 코드엔 렉시컬 환경이 하나만 존재한다.
 
-![Screen Shot 2021-06-11 at 4.10.04 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.10.04 PM.png) 
+![Screen Shot 2021-06-11 at 4 10 04 PM](https://user-images.githubusercontent.com/79819941/121648540-95cb3e80-cad2-11eb-887a-ea610a202db4.png) 
 
 이렇게 스크립트 전체와 관련된 렉시컬 환경은 전역 렉시컬 환경(global Lexical Environment)이라고 한다.
 
@@ -1020,7 +1026,7 @@ alert( counter() ); // 2
 
 코드가 실행되고 실행 흐름이 이어져 나가면서 렉시컬 환경은 변화한다.
 
-![Screen Shot 2021-06-11 at 4.10.26 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.10.26 PM.png) 
+![Screen Shot 2021-06-11 at 4 10 26 PM](https://user-images.githubusercontent.com/79819941/121648644-aed3ef80-cad2-11eb-9100-9cbac259b923.png) 
 
 우측의 네모 상자들은 코드가 한 줄, 한 줄 실행될 때마다 전역 렉시컬 환경이 어떻게 변화하는지 보여준다.
 
@@ -1053,7 +1059,7 @@ alert( counter() ); // 2
 
 아래 그림은 스크립트에 함수를 추가했을 때 전역 렉시컬 환경 초기 상태가 어떻게 변하는지 보여준다.
 
-![Screen Shot 2021-06-11 at 4.10.58 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.10.58 PM.png) 
+![Screen Shot 2021-06-11 at 4 10 58 PM](https://user-images.githubusercontent.com/79819941/121648724-c317ec80-cad2-11eb-8446-b68f726884bf.png)  
 
 이런 동작 방식은 함수 선언문으로 정의한 함수에만 적용됩니다. `let say = function(name)...`같이 함수를 변수에 할당한 함수 표현식(Function Expression)은 해당하지 않는다.
 
@@ -1065,7 +1071,7 @@ alert( counter() ); // 2
 
 `say("John")`을 호출하면 아래와 같은 내부 변화가 일어난다(현재 실행 흐름은 붉은색 화살표로 나타낸 줄에 멈춰있는 상황이다).
 
-![Screen Shot 2021-06-11 at 4.11.32 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.11.32 PM.png)  
+![Screen Shot 2021-06-11 at 4 11 32 PM](https://user-images.githubusercontent.com/79819941/121648794-d88d1680-cad2-11eb-864a-c06b34e95a2a.png)   
 
 
 
@@ -1085,7 +1091,7 @@ alert( counter() ); // 2
 - 함수 `say` 내부의 `alert`에서 변수 `name`에 접근할 땐, 먼저 내부 렉시컬 환경을 살펴본다. 내부 렉시컬 환경에서 변수 `name`을 찾았다.
 - `alert`에서 변수 `phrase`에 접근하려는데, `phrase`에 상응하는 프로퍼티가 내부 렉시컬 환경엔 없다. 따라서 검색 범위는 외부 렉시컬 환경으로 확장된 뒤 외부 렉시컬 환경에서 `phrase`를 찾았다.
 
-![Screen Shot 2021-06-11 at 4.12.04 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.12.04 PM.png) 
+![Screen Shot 2021-06-11 at 4 12 04 PM](https://user-images.githubusercontent.com/79819941/121648882-f195c780-cad2-11eb-9809-8a3f95a3c682.png)  
 
 #### 단계 4. 반환 함수
 
@@ -1108,19 +1114,19 @@ let counter = makeCounter();
 
 위쪽에서 살펴본 `say("John")` 예시와 마찬가지로 `makeCounter()`를 호출할 때도 두 개의 렉시컬 환경이 만들어진다.
 
-![Screen Shot 2021-06-11 at 4.12.39 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.12.39 PM.png) 
+ ![Screen Shot 2021-06-11 at 4 12 39 PM](https://user-images.githubusercontent.com/79819941/121649003-0eca9600-cad3-11eb-9e3c-c89c00a797b3.png) 
 
 그런데 `say("John")`와 `makeCounter()` 예시에는 차이점이 하나 있다. `makeCounter()`가 실행되는 도중에 한 줄짜리 본문(`return count++`)을 가진 중첩 함수가 만들어진다는 점인데, 현재는 중첩함수가 생성되기만 하고 실행은 되지 않은 상태이다.
 
 여기서 중요한 사실이 하나 있다. 모든 함수는 함수가 생성된 곳의 렉시컬 환경을 기억한다는 것이다. 함수는 `[[Environment]]`라 불리는 숨김 프로퍼티를 갖는데, 여기에 함수가 만들어진 곳의 렉시컬 환경에 대한 참조가 저장된다.
 
-![Screen Shot 2021-06-11 at 4.13.19 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.13.19 PM.png) 
+ ![Screen Shot 2021-06-11 at 4 13 19 PM](https://user-images.githubusercontent.com/79819941/121649156-3d487100-cad3-11eb-8f78-0eaefb4b0636.png) 
 
 따라서 `counter.[[Environment]]`엔 `{count: 0}`이 있는 렉시컬 환경에 대한 참조가 저장된다. 호출 장소와 상관없이 함수가 자신이 태어난 곳을 기억할 수 있는 건 바로 `[[Environment]]` 프로퍼티 덕분입니다. `[[Environment]]`는 함수가 생성될 때 딱 한 번 그 값이 세팅됩니다. 그리고 이 값은 영원히 변하지 않는다.
 
 `counter()`를 호출하면 각 호출마다 새로운 렉시컬 환경이 만들어집니다. 그리고 이 렉시컬 환경은 `counter.[[Environment]]`에 저장된 렉시컬 환경을 외부 렉시컬 환경으로서 참조하게 된다.
 
-![Screen Shot 2021-06-11 at 4.14.15 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.14.15 PM.png) 
+ ![Screen Shot 2021-06-11 at 4 14 15 PM](https://user-images.githubusercontent.com/79819941/121649224-53eec800-cad3-11eb-8d7c-a194a2e45384.png) 
 
 실행 흐름이 중첩 함수의 본문으로 넘어오면 `count` 변수가 필요한데, 먼저 자체 렉시컬 환경에서 변수를 찾습니다. 익명 중첩 함수엔 지역변수가 없기 때문에 이 렉시컬 환경은 비어있는 상황입니다(`<empty>`). 이제 `counter()`의 렉시컬 환경이 참조하는 외부 렉시컬 환경에서 `count`를 찾아봅시다. `count`를 찾았다!
 
@@ -1128,7 +1134,7 @@ let counter = makeCounter();
 
 실행이 종료된 후의 상태는 다음과 같다.
 
-![Screen Shot 2021-06-11 at 4.15.58 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.15.58 PM.png) 
+ ![Screen Shot 2021-06-11 at 4 15 58 PM](https://user-images.githubusercontent.com/79819941/121649325-6f59d300-cad3-11eb-87aa-b4962986033b.png) 
 
 `counter()`를 여러 번 호출하면 `count` 변수가 `2`, `3`으로 증가하는 이유가 바로 여기에 있다.
 
@@ -1541,19 +1547,19 @@ function go() {
 
 
 
+
+
 ## 6.5 전역 객체
 
-전역 객체를 사용하면 어디서나 사용 가능한 변수나 함수를 만들 수 있다. 전역 객체는 언어 자체나 호스트 환경에 기본 내장되어 있는 경우가 많다.
+전역 객체를 사용하면 어디서나 사용 가능한 변수나 함수를 만들 수 있다. 전역 객체는 언어 자체나 호스트 환경에 기본 내장되어 있는 경우가 많다. 브라우저 환경에선 전역 객체를 `window`, Node.js 환경에선 `global`라고 부르는데, 각 호스트 환경마다 부르는 이름은 다르다.
 
-브라우저 환경에선 전역 객체를 `window`, Node.js 환경에선 `global`라고 부르는데, 각 호스트 환경마다 부르는 이름은 다르다.
-
-전역 객체의 이름을 `globalThis`로 표준화하자는 내용이 최근에 자바스크립트 명세에 추가되었기 때문에 모든 호스트 환경이 이를 따라야 하는데, Chromium 기반이 아닌 몇몇 브라우저는 아직 `globalThis`를 지원하진 않지만, 이에 대한 폴리필(polyfill)을 쉽게 만들 수 있다.
+**전역 객체의 이름을 `globalThis`로 표준화하자**는 내용이 최근에 자바스크립트 명세에 추가되었기 때문에 모든 호스트 환경이 이를 따라야 하는데, Chromium 기반이 아닌 몇몇 브라우저는 아직 `globalThis`를 지원하진 않지만, 이에 대한 폴리필(polyfill)을 쉽게 만들 수 있다.
 
 본 튜토리얼은 브라우저 환경에서 구동되기 때문에 `window`라는 전역 객체를 사용한다. 그렇기 때문에 혹시라도 다른 호스트 환경에서 작업하고 있다면 `window`대신 `globalThis`를 사용하시면 된다고 한다.
 
 
 
-전역 객체의 모든 프로퍼티는 아래와 같이 직접 접근할 수 있다.                   
+**전역 객체의 모든 프로퍼티는 아래와 같이 직접 접근할 수 있다.**                   
 
 ```javascript
 alert("Hello");
@@ -1563,7 +1569,7 @@ window.alert("Hello");
 
 
 
-브라우저에서 `let`이나 `const`가 아닌 `var`로 선언한 전역 함수나 전역 변수는 전역 객체의 프로퍼티가 된다.
+**브라우저에서 `let`이나 `const`가 아닌 `var`로 선언한 전역 함수나 전역 변수는 전역 객체의 프로퍼티가 된다.**
 
 ```javascript
 var gVar = 5;
@@ -1571,11 +1577,11 @@ var gVar = 5;
 alert(window.gVar); // 5 (var로 선언한 변수는 전역 객체 window의 프로퍼티가 된다)
 ```
 
-하위 호환성 때문에 이런 방식으로 전역 객체를 사용해도 동작은 하지만,  [모듈](https://ko.javascript.info/modules)을 사용하는 모던 자바스크립트는 이런 방식을 지원하지 않아서 이 방법은 쓰지 말아야 한다.
+**하위 호환성 때문에 이런 방식으로 전역 객체를 사용해도 동작은 하지만,  [모듈](https://ko.javascript.info/modules)을 사용하는 모던 자바스크립트는 이런 방식을 지원하지 않아서 이 방법은 쓰지 말아야 한다.**
 
 
 
-`var` 대신 `let`을 사용하면 위 예시와는 달리 전역 객체를 통해 변수에 접근할 수 없다.                   
+**`var` 대신 `let`을 사용하면 위 예시와는 달리 전역 객체를 통해 변수에 접근할 수 없다.**                   
 
 ```javascript
 let gLet = 5;
@@ -1603,7 +1609,7 @@ alert(window.currentUser.name); // John
 
 
 
-전역 변수는 되도록 사용하지 않는 것이 좋다. 함수를 만들 땐 외부 변수나 전역 변수를 사용하는 것보다 ‘인풋’ 변수를 받고 이를 이용해 '아웃풋’을 만들어내게 해야 테스트도 쉽고, 에러도 덜 만들어낸다.
+**전역 변수는 되도록 사용하지 않는 것이 좋다.** 함수를 만들 땐 외부 변수나 전역 변수를 사용하는 것보다 ‘인풋’ 변수를 받고 이를 이용해 '아웃풋’을 만들어내게 해야 테스트도 쉽고, 에러도 덜 만들어낸다.
 
 
 
@@ -1628,8 +1634,6 @@ if (!window.Promise) {
   window.Promise = ... // 모던 자바스크립트에서 지원하는 기능을 직접 구현함
 }
 ```
-
-
 
 
 
