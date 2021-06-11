@@ -439,7 +439,9 @@ let list = {
 
 
 
-위 연결 리스트를 그림으로 표현하면 다음과 같다.![Screen Shot 2021-05-08 at 11 39 33 AM](https://user-images.githubusercontent.com/79819941/117527688-d4b83100-b008-11eb-912f-cd67bb88ca8b.png) 
+위 연결 리스트를 그림으로 표현하면 다음과 같다.
+
+![Screen Shot 2021-05-08 at 11 39 33 AM](https://user-images.githubusercontent.com/79819941/117527688-d4b83100-b008-11eb-912f-cd67bb88ca8b.png)
 
 
 
