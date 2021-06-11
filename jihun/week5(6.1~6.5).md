@@ -361,7 +361,7 @@ alert(sumSalaries(company)); // 7700
 
 아래는 호출이 어떻게 일어나는지를 나타낸 그림이다.
 
-![Screen Shot 2021-06-11 at 4.08.43 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.08.43 PM.png) 
+![Screen Shot 2021-06-11 at 4 08 43 PM](https://user-images.githubusercontent.com/79819941/121648053-0887ea00-cad2-11eb-915f-d8d50cbbe942.png)  
 
 그림을 보면 규칙을 쉽게 확인할 수 있다. 객체 `{...}`를 만나면 서브 호출이 만들어지는 반면, 배열 `[...]`을 만나면 더 이상의 서브 호출이 만들어지지 않고 결과가 바로 계산된다.
 
@@ -440,6 +440,8 @@ let list = {
 
 
 위 연결 리스트를 그림으로 표현하면 다음과 같다.
+
+
 
 ![Screen Shot 2021-05-08 at 11 39 33 AM](https://user-images.githubusercontent.com/79819941/117527688-d4b83100-b008-11eb-912f-cd67bb88ca8b.png)
 
@@ -1014,7 +1016,7 @@ alert( counter() ); // 2
 
 아래 두 줄짜리 코드엔 렉시컬 환경이 하나만 존재한다.
 
-![Screen Shot 2021-06-11 at 4.10.04 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.10.04 PM.png) 
+![Screen Shot 2021-06-11 at 4 10 04 PM](https://user-images.githubusercontent.com/79819941/121648540-95cb3e80-cad2-11eb-887a-ea610a202db4.png) 
 
 이렇게 스크립트 전체와 관련된 렉시컬 환경은 전역 렉시컬 환경(global Lexical Environment)이라고 한다.
 
@@ -1022,7 +1024,7 @@ alert( counter() ); // 2
 
 코드가 실행되고 실행 흐름이 이어져 나가면서 렉시컬 환경은 변화한다.
 
-![Screen Shot 2021-06-11 at 4.10.26 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.10.26 PM.png) 
+![Screen Shot 2021-06-11 at 4 10 26 PM](https://user-images.githubusercontent.com/79819941/121648644-aed3ef80-cad2-11eb-9100-9cbac259b923.png) 
 
 우측의 네모 상자들은 코드가 한 줄, 한 줄 실행될 때마다 전역 렉시컬 환경이 어떻게 변화하는지 보여준다.
 
@@ -1055,7 +1057,7 @@ alert( counter() ); // 2
 
 아래 그림은 스크립트에 함수를 추가했을 때 전역 렉시컬 환경 초기 상태가 어떻게 변하는지 보여준다.
 
-![Screen Shot 2021-06-11 at 4.10.58 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.10.58 PM.png) 
+![Screen Shot 2021-06-11 at 4 10 58 PM](https://user-images.githubusercontent.com/79819941/121648724-c317ec80-cad2-11eb-8446-b68f726884bf.png)  
 
 이런 동작 방식은 함수 선언문으로 정의한 함수에만 적용됩니다. `let say = function(name)...`같이 함수를 변수에 할당한 함수 표현식(Function Expression)은 해당하지 않는다.
 
@@ -1067,7 +1069,7 @@ alert( counter() ); // 2
 
 `say("John")`을 호출하면 아래와 같은 내부 변화가 일어난다(현재 실행 흐름은 붉은색 화살표로 나타낸 줄에 멈춰있는 상황이다).
 
-![Screen Shot 2021-06-11 at 4.11.32 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.11.32 PM.png)  
+![Screen Shot 2021-06-11 at 4 11 32 PM](https://user-images.githubusercontent.com/79819941/121648794-d88d1680-cad2-11eb-864a-c06b34e95a2a.png)   
 
 
 
@@ -1087,7 +1089,7 @@ alert( counter() ); // 2
 - 함수 `say` 내부의 `alert`에서 변수 `name`에 접근할 땐, 먼저 내부 렉시컬 환경을 살펴본다. 내부 렉시컬 환경에서 변수 `name`을 찾았다.
 - `alert`에서 변수 `phrase`에 접근하려는데, `phrase`에 상응하는 프로퍼티가 내부 렉시컬 환경엔 없다. 따라서 검색 범위는 외부 렉시컬 환경으로 확장된 뒤 외부 렉시컬 환경에서 `phrase`를 찾았다.
 
-![Screen Shot 2021-06-11 at 4.12.04 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.12.04 PM.png) 
+![Screen Shot 2021-06-11 at 4 12 04 PM](https://user-images.githubusercontent.com/79819941/121648882-f195c780-cad2-11eb-9809-8a3f95a3c682.png)  
 
 #### 단계 4. 반환 함수
 
@@ -1110,19 +1112,19 @@ let counter = makeCounter();
 
 위쪽에서 살펴본 `say("John")` 예시와 마찬가지로 `makeCounter()`를 호출할 때도 두 개의 렉시컬 환경이 만들어진다.
 
-![Screen Shot 2021-06-11 at 4.12.39 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.12.39 PM.png) 
+ ![Screen Shot 2021-06-11 at 4 12 39 PM](https://user-images.githubusercontent.com/79819941/121649003-0eca9600-cad3-11eb-9e3c-c89c00a797b3.png) 
 
 그런데 `say("John")`와 `makeCounter()` 예시에는 차이점이 하나 있다. `makeCounter()`가 실행되는 도중에 한 줄짜리 본문(`return count++`)을 가진 중첩 함수가 만들어진다는 점인데, 현재는 중첩함수가 생성되기만 하고 실행은 되지 않은 상태이다.
 
 여기서 중요한 사실이 하나 있다. 모든 함수는 함수가 생성된 곳의 렉시컬 환경을 기억한다는 것이다. 함수는 `[[Environment]]`라 불리는 숨김 프로퍼티를 갖는데, 여기에 함수가 만들어진 곳의 렉시컬 환경에 대한 참조가 저장된다.
 
-![Screen Shot 2021-06-11 at 4.13.19 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.13.19 PM.png) 
+ ![Screen Shot 2021-06-11 at 4 13 19 PM](https://user-images.githubusercontent.com/79819941/121649156-3d487100-cad3-11eb-8f78-0eaefb4b0636.png) 
 
 따라서 `counter.[[Environment]]`엔 `{count: 0}`이 있는 렉시컬 환경에 대한 참조가 저장된다. 호출 장소와 상관없이 함수가 자신이 태어난 곳을 기억할 수 있는 건 바로 `[[Environment]]` 프로퍼티 덕분입니다. `[[Environment]]`는 함수가 생성될 때 딱 한 번 그 값이 세팅됩니다. 그리고 이 값은 영원히 변하지 않는다.
 
 `counter()`를 호출하면 각 호출마다 새로운 렉시컬 환경이 만들어집니다. 그리고 이 렉시컬 환경은 `counter.[[Environment]]`에 저장된 렉시컬 환경을 외부 렉시컬 환경으로서 참조하게 된다.
 
-![Screen Shot 2021-06-11 at 4.14.15 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.14.15 PM.png) 
+ ![Screen Shot 2021-06-11 at 4 14 15 PM](https://user-images.githubusercontent.com/79819941/121649224-53eec800-cad3-11eb-8d7c-a194a2e45384.png) 
 
 실행 흐름이 중첩 함수의 본문으로 넘어오면 `count` 변수가 필요한데, 먼저 자체 렉시컬 환경에서 변수를 찾습니다. 익명 중첩 함수엔 지역변수가 없기 때문에 이 렉시컬 환경은 비어있는 상황입니다(`<empty>`). 이제 `counter()`의 렉시컬 환경이 참조하는 외부 렉시컬 환경에서 `count`를 찾아봅시다. `count`를 찾았다!
 
@@ -1130,7 +1132,7 @@ let counter = makeCounter();
 
 실행이 종료된 후의 상태는 다음과 같다.
 
-![Screen Shot 2021-06-11 at 4.15.58 PM](/Users/jihunkim/Desktop/Screen Shot 2021-06-11 at 4.15.58 PM.png) 
+ ![Screen Shot 2021-06-11 at 4 15 58 PM](https://user-images.githubusercontent.com/79819941/121649325-6f59d300-cad3-11eb-87aa-b4962986033b.png) 
 
 `counter()`를 여러 번 호출하면 `count` 변수가 `2`, `3`으로 증가하는 이유가 바로 여기에 있다.
 
