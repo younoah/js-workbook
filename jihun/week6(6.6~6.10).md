@@ -1552,3 +1552,7 @@ lodash 라이브러리의 [_.partial](https://lodash.com/docs#partial)을 사용
 >
 > 부분 적용은 같은 인수를 여러 번 반복하고 싶지 않을 때 유용하다. `send(from, to)`라는 함수가 있는데 `from`을 고정하고 싶다면 `send(from, to)`의 부분 함수를 구현해 사용하면 된다.
 
+
+
+
+
