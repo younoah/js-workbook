@@ -728,3 +728,237 @@ alert( john.age );      // age 역시 사용할 수 있다.
 ```
 
 이제 기존 코드도 잘 작동하고, 멋진 프로퍼티도 새로 생겼다.
+
+
+
+## 8.1 프로토타입 상속
+
+개발을 하다 보면 기존에 있는 기능을 가져와 확장해야 하는 경우가 생긴다. 예를들어, 사람에 관한 프로퍼티와 메서드를 가진 `user`라는 객체가 있는데, `user`와 상당히 유사하지만 약간의 차이가 있는 `admin`과 `guest` 객체를 만들어야 한다고 가정해 보면,  "`user`의 메서드를 복사하거나 다시 구현하지 않고 `user`에 약간의 기능을 얹어 `admin`과 `guest` 객체를 만들 수 있지 않을까?"라는 생각이 들 것이다. 바로 여기서 자바스크립트 언어의 고유 기능인 *프로토타입 상속(prototypal inheritance)* 을 이용하면 위와 같은 생각을 실현할 수 있다.
+
+
+
+#### [[Prototype\]]
+
+자바스크립트의 객체는 명세서에서 명명한 `[[Prototype]]`이라는 숨김 프로퍼티를 갖는다. 이 숨김 프로퍼티 값은 `null`이거나 다른 객체에 대한 참조가되는데, 다른 객체를 참조하는 경우 참조 대상을 '프로토타입(prototype)'이라 부른다.
+
+<img width="229" alt="Screen Shot 2021-06-21 at 11 24 35 PM" src="https://user-images.githubusercontent.com/79819941/122778530-0c90e480-d2e8-11eb-9e14-129b33a7b41c.png"> 
+
+프로토타입의 동작 방식은 '신비스러운’면이 있다. `object`에서 프로퍼티를 읽으려고 하는데 해당 프로퍼티가 없으면 자바스크립트는 자동으로 프로토타입에서 프로퍼티를 찾기 때문이다. 프로그래밍에선 이런 동작 방식을 '프로토타입 상속’이라 부른다. 언어 차원에서 지원하는 편리한 기능이나 개발 테크닉 중 프로토타입 상속에  기반해 만들어진 것들이 많다.
+
+`[[Prototype]]` 프로퍼티는 내부 프로퍼티이면서 숨김 프로퍼티이지만 다양한 방법을 사용해 개발자가 값을 설정할 수 있는데, 아래 예시처럼 특별한 이름인 `__proto__`을 사용하면 값을 설정할 수 있다.
+
+```javascript
+let animal = {
+  eats: true
+};
+let rabbit = {
+  jumps: true
+};
+
+rabbit.__proto__ = animal;
+```
+
+`__proto__`는 `[[Prototype]]`용 getter·setter이다.
+
+`__proto__`는 `[[Prototype]]`과 *다르다*. `__proto__`는 `[[Prototype]]`의 getter(획득자)이자 setter(설정자) 이다.
+
+하위 호환성 때문에 여전히 `__proto__`를 사용할 순 있지만 비교적 근래에 작성된 스크립트에선 `__proto__` 대신 함수 `Object.getPrototypeOf`나 `Object.setPrototypeOf`을 써서 프로토타입을 획득(get)하거나 설정(set)한다. 
+
+`__proto__`는 브라우저 환경에서만 지원하도록 자바스크립트 명세서에서 규정하였는데, 실상은 서버 사이드를 포함한 모든 호스트 환경에서 `__proto__`를 지원한다. `[[Prototype]]`보다는 `__proto__`가 조금 더 직관적이어서 이해하기 쉬우므로, 본 튜토리얼의 예시에선 `__proto__`를 사용하도록 한다.
+
+객체 `rabbit`에서 프로퍼티를 얻고싶은데 해당 프로퍼티가 없다면, 자바스크립트는 자동으로 `animal`이라는 객체에서 프로퍼티를 얻는다.
+
+```javascript
+let animal = {
+  eats: true
+};
+let rabbit = {
+  jumps: true
+};
+
+rabbit.__proto__ = animal; // (*)
+
+// 프로퍼티 eats과 jumps를 rabbit에서도 사용할 수 있게 되었다.
+alert( rabbit.eats ); // true (**)
+alert( rabbit.jumps ); // true
+```
+
+`(*)`로 표시한 줄에선 `animal`이 `rabbit`의 프로토타입이 되도록 설정하였다.
+
+`(**)`로 표시한 줄에서 `alert` 함수가 `rabbit.eats` 프로퍼티를 읽으려 했는데, `rabbit`엔 `eats`라는 프로퍼티가 없다. 이때 자바스크립트는 `[[Prototype]]`이 참조하고 있는 객체인 `animal`에서 `eats`를 얻어낸다. 아래 그림을 밑에서부터 위로 살펴보자.
+
+<img width="235" alt="Screen Shot 2021-06-21 at 11 24 43 PM" src="https://user-images.githubusercontent.com/79819941/122778756-377b3880-d2e8-11eb-9560-3980a291f43a.png"> 
+
+이제 “`rabbit`의 프로토타입은 `animal`이다.” 혹은 "`rabbit`은 `animal`을 상속한다."라고 말 할 수 있게 되었다.
+
+프로토타입을 설정해 준 덕분에 `rabbit`에서도 `animal`에 구현된 유용한 프로퍼티와 메서드를 사용할 수 있게 되었는데, 프로토타입에서 상속받은 프로퍼티를 '상속 프로퍼티(inherited property)'라고 한다.
+
+상속 프로퍼티를 사용해 `animal`에 정의된 메서드를 `rabbit`에서 호출해 보자.                      
+
+```javascript
+let animal = {
+  eats: true,
+  walk() {
+    alert("동물이 걷습니다.");
+  }
+};
+
+let rabbit = {
+  jumps: true,
+  __proto__: animal
+};
+
+// 메서드 walk는 rabbit의 프로토타입인 animal에서 상속받았다.
+rabbit.walk(); // 동물이 걷습니다.
+```
+
+아래 그림과 같이 프로토타입(`animal`)에서 `walk`를 자동으로 상속받았기 때문에 `rabbit`에서도 `walk`를 호출할 수 있게 되었다. 
+
+<img width="239" alt="Screen Shot 2021-06-21 at 11 24 49 PM" src="https://user-images.githubusercontent.com/79819941/122778843-4bbf3580-d2e8-11eb-96e4-922fcb337931.png"> 
+
+프로토타입 체인은 지금까지 살펴본 예시들보다 길어질 수 있다.                      
+
+```javascript
+let animal = {
+  eats: true,
+  walk() {
+    alert("동물이 걷습니다.");
+  }
+};
+
+let rabbit = {
+  jumps: true,
+  __proto__: animal
+};
+
+let longEar = {
+  earLength: 10,
+  __proto__: rabbit
+};
+
+// 메서드 walk는 프로토타입 체인을 통해 상속받았다.
+longEar.walk(); // 동물이 걷습니다.
+alert(longEar.jumps); // true (rabbit에서 상속받음)
+```
+
+<img width="254" alt="Screen Shot 2021-06-21 at 11 24 56 PM" src="https://user-images.githubusercontent.com/79819941/122778895-5a0d5180-d2e8-11eb-975e-58c7f5bee517.png"> 
+
+프로토타입 체이닝엔 두 가지 제약사항이 있다.
+
+1. 순환 참조(circular reference)는 허용되지 않는다. `__proto__`를 이용해 닫힌 형태로 다른 객체를 참조하면 에러가 발생한다.
+2. `__proto__`의 값은 객체나 `null`만 가능합니다. 다른 자료형은 무시된다.
+
+여기에 더하여 객체엔 오직 하나의 `[[Portotype]]`만 있을 수 있다는 당연한 제약도 있다. 객체는 두 개의 객체를 상속받지 못한다.
+
+
+
+#### 쓸 때는 프로토타입을 사용하지 않는다.
+
+프로토타입은 프로퍼티를 읽을 때만 사용한다. 프로퍼티를 추가, 수정하거나 지우는 연산은 객체에 직접 해야 하는데 객체 `rabbit`에 메서드 `walk`를 직접 할당해 보자.
+
+```javascript
+let animal = {
+  eats: true,
+  walk() {
+    /* rabbit은 이제 이 메서드를 사용하지 않는다. */
+  }
+};
+
+let rabbit = {
+  __proto__: animal
+};
+
+rabbit.walk = function() {
+  alert("토끼가 깡충깡충 뜁니다.");
+};
+
+rabbit.walk(); // 토끼가 깡충깡충 뜁니다.
+```
+
+`rabbit.walk()`를 호출하면 프로토타입에 있는 메서드가 실행되지 않고, 객체 `rabbit`에 추가한 메서드가 실행된다.
+
+<img width="234" alt="Screen Shot 2021-06-21 at 11 25 04 PM" src="https://user-images.githubusercontent.com/79819941/122778960-6a253100-d2e8-11eb-8649-49d25bb65bea.png"> 
+
+그런데 접근자 프로퍼티(accessor property)는 setter 함수를 통해서 프로퍼티에 값을 할당하므로 이 규칙이 적용되지 않는다. 접근자 프로퍼티에 값을 할당하는 것은 함수를 호출하는 것과 같기 때문이다.
+
+아래 예시에서 `admin.fullName`이 의도한 대로 잘 작동하는 것을 확인할 수 있다.
+
+```javascript
+let user = {
+  name: "John",
+  surname: "Smith",
+
+  set fullName(value) {
+    [this.name, this.surname] = value.split(" ");
+  },
+
+  get fullName() {
+    return `${this.name} ${this.surname}`;
+  }
+};
+
+let admin = {
+  __proto__: user,
+  isAdmin: true
+};
+
+alert(admin.fullName); // John Smith (*)
+
+// setter 함수가 실행된다!
+admin.fullName = "Alice Cooper"; // (**)
+
+alert(admin.fullName); // Alice Cooper , state of admin modified
+alert(user.fullName); // John Smith , state of user protected
+```
+
+`(*)`로 표시한 줄에서 `admin.fullName`은 프로토타입(`user`)에 있는 getter 함수(`get fullName`)를 호출하고, `(**)`로 표시한 줄의 할당 연산은 프로토타입에 있는 setter 함수(`set fullName`)를 호출한다.
+
+
+
+#### 'this’가 나타내는 것
+
+위 예시를 보면 "`set fullName(value)` 본문의 `this`엔 어떤 값이 들어가지?"라는 의문을 가질 수 있다. "프로퍼티 `this.name`과 `this.surname`에 값을 쓰면 그 값이 `user`에 저장될까, 아니면 `admin`에 저장될까?"라는 의문도 생길 수 있다. 답은 간단한데, `this`는 프로토타입에 영향을 받지 않는다.
+
+**메서드를 객체에서 호출했든 프로토타입에서 호출했든 상관없이 `this`는 언제나 `.` 앞에 있는 객체가 된다.**
+
+`admin.fullName=`으로 setter 함수를 호출할 때, `this`는 `user`가 아닌 `admin`이 된다.
+
+객체 하나를 만들고 여기에 메서드를 많이 구현해 놓은 다음, 여러 객체에서 이 커다란 객체를 상속받게 하는 경우가 많기  때문에 이런 특징을 잘 알아둬야 한다. 상속받은 메서드를 사용하더라도 객체는 프로토타입이 아닌 자신의 상태를 수정한다.
+
+예시를 통해 좀 더 알아보면 ‘메서드 저장소’ 역할을 하는 객체 `animal`을 `rabbit`이 상속받게 해보자.
+
+`rabbit.sleep()`을 호출하면 `this.isSleeping`이 객체 `rabbit`에 설정된다.
+
+```javascript
+// animal엔 다양한 메서드가 있다.
+let animal = {
+  walk() {
+    if (!this.isSleeping) {
+      alert(`동물이 걸어갑니다.`);
+    }
+  },
+  sleep() {
+    this.isSleeping = true;
+  }
+};
+
+let rabbit = {
+  name: "하얀 토끼",
+  __proto__: animal
+};
+
+// rabbit의 프로퍼티 isSleeping을 true로 변경한다.
+rabbit.sleep();
+
+alert(rabbit.isSleeping); // true
+alert(animal.isSleeping); // undefined (프로토타입에는 isSleeping이라는 프로퍼티가 없다.)
+```
+
+위 코드를 실행한 후, 객체의 상태를 그림으로 나타내면 다음과 같다.
+
+<img width="247" alt="Screen Shot 2021-06-21 at 11 25 13 PM" src="https://user-images.githubusercontent.com/79819941/122779105-87f29600-d2e8-11eb-9cc7-c7a3f6662749.png"> 
+
+`rabbit` 말고도 `bird`, `snake` 등이 `animal`을 상속받는다고 해보자. 이 객체들도 `rabbit`처럼 `animal`에 구현된 메서드를 사용할 수 있다. 이때 상속받은 메서드의 `this`는 `animal`이 아닌 실제 메서드가 호출되는 시점의 점(`.`) 앞에 있는 객체가 되는데,  `this`에 데이터를 쓰면 `animal`이 아닌 해당 객체의 상태가 변화한다.
+
+메서드는 공유되지만, 객체의 상태는 공유되지 않는다고 결론 내릴 수 있다.
+
