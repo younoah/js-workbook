@@ -1,0 +1,49 @@
+# 08.03 네이티브 프로토타입
+
+## Object.prototype
+``` jsx
+let obj = {};
+alert(obj); //"[Object Object]"?
+```
+
+# 09.01 클래스와 기본 문법
+
+## 기본 문법
+``` jsx
+class MyClass{
+    // 여러 메서드를 정의할 수 있음
+    constructor(){...}
+    method1(){...}
+    method2(){...}
+    method3(){...}
+    ...
+}
+```
+
+이렇게 클래스를 만들고, new MyClass()를 호출하면 내부에서 정의한 메서드가 들어 있는 객체가 생성된다. 
+
+객체의 기본 상태를 설정해주는 생성자 메서드 constructor()는 new에 의 해 자동으로 호출되므로, 특별한 절차 없이 객체를 초기화 할 수 있다. 
+
+``` jsx
+class User {
+
+    constructor(name){
+        this.name = name;
+    }
+
+    sayHi(){
+        console.log(this.name);
+    }
+
+}
+
+// 사용법:
+let user = new User("John");
+user.sayHi();
+```
+
+new User("John") 이 호출하면 다음과 같은 일이 일어난다. 
+1. 새로운 객체가 생성된다. 
+2. 넘겨받는 인수와 함께 constructor가 자동으로 실행된다. 이때 인수 "John"이 this.name에 할당된다. 
+이런 과정 후에 user.sayHi() 같은 객체 메서드를 호출할 수 없다. 
+
