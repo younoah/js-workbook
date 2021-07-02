@@ -156,7 +156,7 @@ alert( "La".repeat(3) ); // LaLaLa
 
 
 
-## 프로토타입에서 빌려오기
+#### 프로토타입에서 빌려오기
 
 [call/apply와 데코레이터, 포워딩](https://ko.javascript.info/call-apply-decorators#method-borrowing)에서 메서드 빌리기에 대한 내용을 학습한 바 있는데, 한 객체의 메서드를 다른 객체로 복사할 때 이 기법이 사용된다. 개발을 하다 보면 네이티브 프로토타입에 구현된 메서드를 빌려야 하는 경우가 종종 생긴다고 한다.
 
@@ -189,4 +189,112 @@ alert( obj.join(',') ); // Hello,world!
 > - `undefined`와 `null` 값은 래퍼 객체를 가지지 않는다.
 > - 내장 프로토타입을 수정할 수 있다. 내장 프로토타입의 메서드를 빌려와 새로운 메서드를 만드는 것 역시 가능하지만내장 프로토타입 변경은 되도록 하지 않아야 한다.
 > -  내장 프로토타입은 새로 명세서에 등록된 기능을 사용하고 싶은데 자바스크립트 엔진엔 이 기능이 구현되어있지 않을 때만 변경하는 게 좋다.
+
+
+
+
+
+## 8.4 프로토타입 메서드와 __proto__가 없는 객체
+
+이 절의 첫 번째 챕터에서 프로토타입을 설정하기 위한 모던한 방법이 있다고 했었는데, `__proto__`는 브라우저를 대상으로 개발하고 있다면 다소 구식이기 때문에 더는 사용하지 않는 것이 좋다고 표준에도 관련 내용이 명시되어있다.
+
+대신 아래와 같은 모던한 메서드들을 사용하는 것이 좋다.
+
+- [Object.create(proto, [descriptors\])](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/create) – `[[Prototype]]`이 `proto`를 참조하는 빈 객체를 만든다. 이때 프로퍼티 설명자를 추가로 넘길 수 있다.
+- [Object.getPrototypeOf(obj)](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf) – `obj`의 `[[Prototype]]`을 반환한다.
+- [Object.setPrototypeOf(obj, proto)](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf) – `obj`의 `[[Prototype]]`이 `proto`가 되도록 설정한다.
+
+앞으론 아래 예시처럼 `__proto__` 대신 이 메서드들을 사용하도록 하자.
+
+```javascript
+let animal = {
+  eats: true
+};
+
+// 프로토타입이 animal인 새로운 객체를 생성한다.
+let rabbit = Object.create(animal);
+
+alert(rabbit.eats); // true
+
+alert(Object.getPrototypeOf(rabbit) === animal); // true
+
+Object.setPrototypeOf(rabbit, {}); // rabbit의 프로토타입을 {}으로 바꾼다.
+```
+
+메서드를 소개할 때 잠시 언급한 것처럼 `Object.create`에는 프로퍼티 설명자를 선택적으로 전달할 수 있다. 설명자를 이용해 새 객체에 프로퍼티를 추가해 보자.
+
+```javascript
+let animal = {
+  eats: true
+};
+
+let rabbit = Object.create(animal, {
+  jumps: {
+    value: true
+  }
+});
+
+alert(rabbit.jumps); // true
+```
+
+설명자는 [프로퍼티 플래그와 설명자](https://ko.javascript.info/property-descriptors)에서 배운 것과 같은 형태로 사용하면 된다.
+
+`Object.create`를 사용하면 `for..in`을 사용해 프로퍼티를 복사하는 것보다 더 효과적으로 객체를 복제할 수 있다.
+
+```javascript
+let clone = Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj));
+```
+
+`Object.create`를 호출하면 `obj`의 모든 프로퍼티를 포함한 완벽한 사본이 만들어진다, 사본엔 열거 가능한 프로퍼티와 불가능한 프로퍼티, 데이터 프로퍼티, getter, setter 등 모든 프로퍼티가 복제되며 또한  `[[Prototype]]`도 복제된다.
+
+
+
+#### 비하인드 스토리
+
+`[[Prototype]]`을 다룰 수 있는 방법은 다양하다. 목표는 하나지만 목표를 이루기 위한 수단은 여러 가지인데, 역사적인 이유가 있다.
+
+- 생성자 함수의 `"prototype"` 프로퍼티는 아주 오래전부터 그 기능을 수행하고 있었다.
+- 그런데 2012년, 표준에 `Object.create`가 추가되었다. `Object.create`를 사용하면 주어진 프로토타입을 사용해 객체를 만들 수 있긴 하지만, 프로토타입을 얻거나 설정하는것은 불가능했다. 그래서 브라우저는 비표준 접근자인 `__proto__`를 구현해 언제나 프로토타입을 얻거나 설정할 수 있도록 하였다.
+- 이후 2015년에 `Object.setPrototypeOf`와 `Object.getPrototypeOf`가 표준에 추가되면서 `__proto__`와 동일한 기능을 수행할 수 있게 되었다. 그런데 이 시점엔 `__proto__`가 모든 곳에 구현되어 있어서 사실상 표준(de-facto standard)이 되어버렸다. 표준의 부록 B(Annex B)에 추가되기도 하였습니다. 이 부록에 추가되면 브라우저가 아닌 환경에선 선택사항이라는것을 의미한다.
+
+이런 이유 때문에 지금은 여러 방식을 원하는 대로 쓸 수 있게 된 것이다.
+
+그런데 "왜 `__proto__`가 함수 `getPrototypeOf/setPrototypeOf`로 대체되었을까?"라는 의문이 떠오를 수 있다. 답은 `__proto__`가 왜 나쁜지 이해하면 얻을 수 있다. 
+
+**속도가 중요하다면 기존 객체의 `[[Prototype]]`을 변경하지 말자.**
+
+원한다면 언제나 `[[Prototype]]`을 얻거나 설정할 수 있다. 기술적인 제약이 있는 건 아니지만 대개는 객체를 생성할 때만 `[[Prototype]]`을 설정하고 이후엔 수정하지 않는다. `rabbit`이 `animal`을 상속받도록 설정하고 난 이후엔 이를 변경하지 않는다.
+
+자바스크립트 엔진은 이런 시나리오를 토대로 최적화되어 있다. `Object.setPrototypeOf`나 `obj.__proto__=`를 써서 프로토타입을 그때그때 바꾸는 연산은 객체 프로퍼티 접근 관련 최적화를 망치기 때문에 매우 느리다. 그러므로 `[[Prototype]]`을 바꾸는 것이 어떤 결과를 초래할지 확실히 알거나 속도가 전혀 중요하지 않은 경우가 아니라면 `[[Prototype]]`을 바꾸지 말자.
+
+
+
+#### '아주 단순한' 객체
+
+알다시피 객체는 키-값 쌍을 저장할 수 있는 연관 배열이다.
+
+그런데 커스텀 사전을 만드는 것과 같이 사용자가 직접 입력한 키를 가지고 객체를 만들다 보면 사소한 결함이 발견된다. 다른 문자열은 괜찮지만 `"__proto__"`는 키로 사용할 수 없다는 결함이다.
+
+```javascript
+let obj = {};
+
+let key = prompt("입력하고자 하는 key는 무엇이지?", "__proto__");
+obj[key] = "...값...";
+
+alert(obj[key]); // "...값..."이 아닌 [object Object]가 출력된다.
+```
+
+사용자가 프롬프트 창에 `__proto__`를 입력하면 값이 제대로 할당되지 않는다.`__proto__` 프로퍼티는 특별한 프로퍼티라는 것을 이미 알고 있고,  `__proto__`는 항상 객체이거나 `null`이어야 한다. 문자열은 프로토타입이 될 수 없다.
+
+키가 무엇이 되었든, 키-값 쌍을 저장하려고 하는데 키가 `__proto__`일 때 값이 제대로 저장되지 않는 건 명백한 버그이다.
+
+위 예시에선 이 버그가 그리 치명적이진 않다. 그런데 할당 값이 객체일 때는 프로토타입이 바뀔 수 있다는 치명적인 버그가 발생할 수 있다. 프로토타입이 바뀌면 예상치 못한 일이 발생할 수 있기 때문이다.
+
+개발자들은 대개 프로토타입이 중간에 바뀌는 시나리오는 배제한 채 개발을 진행한다. 이런 고정관념 때문에 버그의 원인을 찾는 게 힘들어진다. 이유는 프로토타입이 바뀐 것을 눈치채지 못하기 때문이다. 서버 사이드에서 자바스크립트를 사용 중일 땐 이런 버그가 취약점이 되기도 한다.
+
+`toString`을 비롯한 내장 메서드에 할당을 할 때도 같은 이유 때문에 예상치 못한 일이 일어날 수 있다.
+
+그렇다면 이런 문제는 어떻게 예방할 수 있을까? 객체 대신 `맵`을 사용하면 모든 것이 해결된다.
+
+그런데 자바스크립트를 만든 사람들이 아주 오래전부터 이런 문제를 고려했기 때문에 `객체`를 써도 문제를 피할 수 있는데, `__proto__`는 객체의 프로퍼티가 아니라 `Object.prototype`의 접근자 프로퍼티이다.
 
