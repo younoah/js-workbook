@@ -298,3 +298,88 @@ alert(obj[key]); // "...값..."이 아닌 [object Object]가 출력된다.
 
 그런데 자바스크립트를 만든 사람들이 아주 오래전부터 이런 문제를 고려했기 때문에 `객체`를 써도 문제를 피할 수 있는데, `__proto__`는 객체의 프로퍼티가 아니라 `Object.prototype`의 접근자 프로퍼티이다.
 
+![Screen Shot 2021-07-03 at 11 51 10 PM](https://user-images.githubusercontent.com/79819941/124358194-291f0c00-dc5a-11eb-93dc-934d4841a135.png) 
+
+그렇기 때문에 `obj.__proto__`를 읽거나 쓸때는 이에 대응하는 getter·setter가 프로토타입에서 호출되고 `[[Prototype]]`을 가져오거나 설정한다.
+
+이 절을 시작할 때 언급한 것처럼 `__proto__`는 `[[Prototype]]`에 접근하기 위한 방법이지 `[[Prototype]]` 그 자체가 아닌 것이다.
+
+이제 간단한 트릭을 써 객체가 연관 배열의 역할을 다 할 수 있도록 해보자.
+
+```javascript
+let obj = Object.create(null);
+
+let key = prompt("입력하고자 하는 key는 무엇인가요?", "__proto__");
+obj[key] = "...값...";
+
+alert(obj[key]); // "...값..."이 제대로 출력된다.
+```
+
+`Object.create(null)`을 사용해 프로토타입이 없는 빈 객체를 만들어 보았다. `[[Prototype]]`이 `null`인 객체를 만든 것이다.
+
+![Screen Shot 2021-07-03 at 11 51 17 PM](https://user-images.githubusercontent.com/79819941/124358207-389e5500-dc5a-11eb-8ff9-8642e5d4a1e7.png) 
+
+
+
+`Object.create(null)`로 객체를 만들면 `__proto__` getter와 setter를 상속받지 않는다. 이제 `__proto__`는 평범한 데이터 프로퍼티처럼 처리되므로 버그 없이 예시가 잘 동작하게 된다.
+
+이런 객체는 ‘아주 단순한(very plain)’ 혹은 ‘순수 사전식(pure dictionary)’ 객체라고 부른다. 일반 객체 `{...}` 보다 훨씬 단순하기 때문이다.
+
+아주 단순한 객체는 내장 메서드가 없다는 단점이 있다. `toString`같은 메서드를 사용할 수 없다.
+
+```javascript
+let obj = Object.create(null);
+
+alert(obj); // Error: Cannot convert object to primitive value (toString이 없음)
+```
+
+연관 배열로 쓸 때는 이런 단점이 문제가 되진 않는다.
+
+객체 관련 메서드 대부분은 `Object.keys(obj)` 같이 `Object.something(...)` 형태이다. 이 메서드들은 프로토타입에 있는 게 아니기 때문에 '아주 단순한 객체’에도 사용할 수 있다.
+
+```javascript
+let chineseDictionary = Object.create(null);
+chineseDictionary.hello = "你好";
+chineseDictionary.bye = "再见";
+
+alert(Object.keys(chineseDictionary)); // hello,bye
+```
+
+
+
+>요약
+>
+>프로토타입에 직접 접근할 땐 다음과 같은 모던 메서드를 사용할 수 있다.
+>
+>- [Object.create(proto, [descriptors\])](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/create) – `[[Prototype]]`이 `proto`인 객체를 만든다. 참조 값은 `null`일 수 있고 프로퍼티 설명자를 넘기는 것도 가능하다.
+>- [Object.getPrototypeOf(obj)](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object.getPrototypeOf) – `obj`의 `[[Prototype]]`을 반환한다(`__proto__` getter와 같다).
+>- [Object.setPrototypeOf(obj, proto)](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object.setPrototypeOf) – `obj`의 `[[Prototype]]`을 `proto`로 설정한다(`__proto__` setter와 같다).
+>
+>사용자가 키를 직접 만들 수 있게 허용하면, 내장 `__proto__` getter·setter는 안전하지 않다. 키가 `"__proto__"`일 때 에러가 발생할 수 있다. 단순한 에러면 좋겠지만 보통 예측 불가능한 결과가 생긴다.
+>
+>이를 방지하려면 `Object.create(null)`을 사용해 `__proto__`가 없는 '아주 단순한 객체’를 만들거나, `맵`을 일관되게 사용하는 것이 좋다.
+>
+>한편, `Object.create`를 사용하면 객체의 얕은 복사본(shallow-copy)을 만들 수 있다.
+>
+>```javascript
+>let clone = Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj));
+>```
+>
+>`__proto__`는 `[[Prototype]]`의 getter·setter라는 점과 다른 메서드처럼 `Object.prototype`에 정의되어 있다는 것도 확인해 보았다.
+>
+>`Object.create(null)`을 사용하면 프로토타입이 없는 객체를 만들 수 있다. 이런 객체는 '순수 사전’처럼 사용됩니다. `"__proto__"`를 키로 사용해도 문제를 일으키지 않는다.
+>
+>이런 내용과 더불어 아래 메서드들을 같이 살펴보면 좋다.
+>
+>- [Object.keys(obj)](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/keys) / [Object.values(obj)](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/values) / [Object.entries(obj)](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/entries) – `obj` 내 열거 가능한 프로퍼티 키, 값, 키-값 쌍을 담은 배열을 반환한다.
+>- [Object.getOwnPropertySymbols(obj)](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertySymbols) – `obj` 내 심볼형 키를 담은 배열을 반환한다.
+>- [Object.getOwnPropertyNames(obj)](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyNames) – `obj` 내 문자형 키를 담은 배열을 반환한다.
+>- [Reflect.ownKeys(obj)](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Reflect/ownKeys) – `obj`내 키 전체를 담은 배열을 반환한다.
+>- [obj.hasOwnProperty(key)](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty) – 상속받지 않고 `obj` 자체에 구현된 키 중 이름이 `key`인 것이 있으면 `true`를 반환한다.
+>
+>`Object.keys`를 비롯하여 객체의 프로퍼티를 반환하는 메서드들은 객체가 ‘직접 소유한’ 프로퍼티만 반환한다. 상속 프로퍼티는 `for..in`을 사용해 얻을 수 있다.
+
+#### 
+
+
+
