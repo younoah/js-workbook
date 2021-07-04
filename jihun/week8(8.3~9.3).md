@@ -381,5 +381,178 @@ alert(Object.keys(chineseDictionary)); // hello,bye
 
 #### 
 
+## 9.1 클래스와 기본 문법
 
+> 클래스는 객체 지향 프로그래밍에서 특정 객체를 생성하기 위해 변수와 메소드를 정의하는 일종의 틀로, 객체를 정의하기 위한 상태(멤버 변수)와 메서드(함수)로 구성된다.
+>
+> -위키백과-
+
+실무에선 사용자나 물건같이 동일한 종류의 객체를 여러 개 생성해야 하는 경우가 잦은데, 이럴 때 [new 연산자와 생성자 함수](https://ko.javascript.info/constructor-new)에서 배운 `new function`을 사용할 수 있다.
+
+여기에 더하여 모던 자바스크립트에 도입된 `클래스(class)`라는 문법을 사용하면 객체 지향 프로그래밍에서 사용되는 다양한 기능을 자바스크립트에서도 사용할 수 있다.
+
+
+
+#### 기본 문법
+
+클래스는 다음과 같은 기본 문법을 사용해 만들 수 있다.
+
+```javascript
+class MyClass {
+  // 여러 메서드를 정의할 수 있음
+  constructor() { ... }
+  method1() { ... }
+  method2() { ... }
+  method3() { ... }
+  ...
+}
+```
+
+이렇게 클래스를 만들고, `new MyClass()`를 호출하면 내부에서 정의한 메서드가 들어 있는 객체가 생성된다.
+
+객체의 기본 상태를 설정해주는 생성자 메서드 `constructor()`는 `new`에 의해 자동으로 호출되므로, 특별한 절차 없이 객체를 초기화 할 수 있다.
+
+```javascript
+class User {
+
+  constructor(name) {
+    this.name = name;
+  }
+
+  sayHi() {
+    alert(this.name);
+  }
+
+}
+
+// 사용법:
+let user = new User("John");
+user.sayHi();
+```
+
+`new User("John")`를 호출하면 다음과 같은 일이 일어난다.
+
+1. 새로운 객체가 생성된다.
+2. 넘겨받은 인수와 함께 `constructor`가 자동으로 실행된다. 이때 인수 `"John"`이 `this.name`에 할당된다.
+
+이런 과정을 거친 후에 `user.sayHi()` 같은 객체 메서드를 호출할 수 있다.
+
+**메서드 사이엔 쉼표가 없다.**
+
+초보 개발자는 클래스 메서드 사이에 쉼표를 넣는 실수를 저지르곤 하는데, 이렇게 쉼표를 넣으면 문법 에러가 발생한다.
+
+클래스와 관련된 표기법은 객체 리터럴 표기법과 차이가 있다. 클래스에선 메서드 사이에 쉼표를 넣지 않아도 된다.
+
+
+
+#### 클래스란
+
+이 시점에서 "`클래스`가 정확히 뭔가요?"라는 의문이 생기실 것이다. 클래스는 자바스크립트에서 새롭게 창안한 개체(entity)가 아니다.  **자바스크립트에서 클래스는 함수의 한 종류이다.**
+
+코드로 확인해보자.
+
+```javascript
+class User {
+  constructor(name) { this.name = name; }
+  sayHi() { alert(this.name); }
+}
+
+// User가 함수라는 증거
+alert(typeof User); // function
+```
+
+`class User {...}` 문법 구조가 진짜 하는 일은 다음과 같다.
+
+1. `User`라는 이름을 가진 함수를 만든다. 함수 본문은 생성자 메서드 `constructor`에서 가져온다. 생성자 메서드가 없으면 본문이 비워진 채로 함수가 만들어진다.
+2. `sayHi`같은 클래스 내에서 정의한 메서드를 `User.prototype`에 저장한다.
+
+`new User`를 호출해 객체를 만들고, 객체의 메서드를 호출하면 [함수의 prototype 프로퍼티](https://ko.javascript.info/function-prototype)에서 설명한 것처럼 메서드를 프로토타입에서 가져오는데 이 과정이 있기 때문에 객체에서 클래스 메서드에 접근할 수 있다.
+
+`class User` 선언 결과를 그림으로 나타내면 아래와 같다.
+
+![Screen Shot 2021-07-04 at 10 25 25 PM](https://user-images.githubusercontent.com/79819941/124386784-f9820980-dd16-11eb-982e-6942d519e50a.png) 
+
+지금까지 했던 설명을 코드로 표현하면 다음과 같다.
+
+```javascript
+class User {
+  constructor(name) { this.name = name; }
+  sayHi() { alert(this.name); }
+}
+
+// 클래스는 함수이다.
+alert(typeof User); // function
+
+// 정확히는 생성자 메서드와 동일하다.
+alert(User === User.prototype.constructor); // true
+
+// 클래스 내부에서 정의한 메서드는 User.prototype에 저장된다.
+alert(User.prototype.sayHi); // alert(this.name);
+
+// 현재 프로토타입에는 메서드가 두 개이다.
+alert(Object.getOwnPropertyNames(User.prototype)); // constructor, sayHi
+```
+
+
+
+#### 클래스는 단순한 편의 문법이 아니다
+
+어떤 사람들은 `class`라는 키워드 없이도 클래스 역할을 하는 함수를 선언할 수 있기 때문에 `클래스`는 '편의 문법’에 불과하다고 이야기한다. 참고로 기능은 동일하나 기존 문법을 쉽게 읽을 수 있게 만든 문법을 편의 문법(syntactic sugar, 문법 설탕)이라고 한다.
+
+```javascript
+// class User와 동일한 기능을 하는 순수 함수를 만들어보자.
+
+// 1. 생성자 함수를 만든다.
+function User(name) {
+  this.name = name;
+}
+// 모든 함수의 프로토타입은 'constructor' 프로퍼티를 기본으로 갖고 있기 때문에
+// constructor 프로퍼티를 명시적으로 만들 필요가 없다.
+
+// 2. prototype에 메서드를 추가한다.
+User.prototype.sayHi = function() {
+  alert(this.name);
+};
+
+// 사용법:
+let user = new User("John");
+user.sayHi();
+```
+
+위 예시처럼 순수 함수로 클래스 역할을 하는 함수를 선언하는 방법과 `class` 키워드를 사용하는 방법의 결과는 거의 같다. `class`가 단순한 편의 문법이라고 생각하는 이유가 여기에 있다.
+
+그런데 두 방법에는 중요한 차이가 몇 가지 있다.
+
+1. `class`로 만든 함수엔 특수 내부 프로퍼티인 `[[FunctionKind]]:"classConstructor"`가 이름표처럼 붙는다. 이것만으로도 두 방법엔 분명한 차이가 있음을 알 수 있다.
+
+   자바스크립트는 다양한 방법을 사용해 함수에 `[[FunctionKind]]:"classConstructor"`가 있는지를 확인한다. 이런 검증 과정이 있기 때문에 클래스 생성자를 `new`와 함께 호출하지 않으면 에러가 발생한다.
+
+   ```javascript
+   class User {
+     constructor() {}
+   }
+   
+   alert(typeof User); // function
+   User(); // TypeError: Class constructor User cannot be invoked without 'new'
+   ```
+
+   대부분의 자바스크립트 엔진이 클래스 생성자를 문자열로 표현할 때 'class…'로 시작하는 문자열로 표현한다는 점 역시 다르다.
+
+   ```javascript
+   class User {
+     constructor() {}
+   }
+   
+   alert(User); // class User { ... }
+   ```
+
+   또 다른 차이점들에 대해선 더 살펴볼 예정이다.
+
+2. 클래스 메서드는 열거할 수 없다(non-enumerable). 클래스의 `prototype` 프로퍼티에 추가된 메서드 전체의 `enumerable` 플래그는 `false`이다.
+
+   `for..in`으로 객체를 순회할 때, 메서드는 순회 대상에서 제외하고자 하는 경우가 많으므로 이 특징은 꽤 유용하다.
+
+3. 클래스는 항상 `엄격 모드`로 실행된다(`use strict`). 클래스 생성자 안 코드 전체엔 자동으로 엄격 모드가 적용된다.
+
+이 외에도 `class`를 사용하면 다양한 기능이 따라오는데, 자세한 내용은 차차 알아볼 것이다.
 
