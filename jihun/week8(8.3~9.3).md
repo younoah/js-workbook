@@ -556,3 +556,216 @@ user.sayHi();
 
 이 외에도 `class`를 사용하면 다양한 기능이 따라오는데, 자세한 내용은 차차 알아볼 것이다.
 
+
+
+#### 클래스 표현식
+
+함수처럼 클래스도 다른 표현식 내부에서 정의, 전달, 반환, 할당할 수 있다.
+
+먼저 클래스 표현식을 만들어보자.
+
+```javascript
+let User = class {
+  sayHi() {
+    alert("Hello");
+  }
+};
+```
+
+기명 함수 표현식(Named Function Expression)과 유사하게 클래스 표현식에도 이름을 붙일 수 있다.
+
+클래스 표현식에 이름을 붙이면, 이 이름은 오직 클래스 내부에서만 사용할 수 있다.
+
+```javascript
+// 기명 클래스 표현식(Named Class Expression)
+// (명세서엔 없는 용어이지만, 기명 함수 표현식과 유사하게 동작한다.)
+let User = class MyClass {
+  sayHi() {
+    alert(MyClass); // MyClass라는 이름은 오직 클래스 안에서만 사용할 수 있다.
+  }
+};
+
+new User().sayHi(); // 제대로 동작한다(MyClass의 정의를 보여줌).
+
+alert(MyClass); // ReferenceError: MyClass is not defined, MyClass는 클래스 밖에서 사용할 수 없다.
+```
+
+아래와 같이 ‘필요에 따라’ 클래스를 동적으로 생성하는 것도 가능하다.
+
+```javascript
+function makeClass(phrase) {
+  // 클래스를 선언하고 이를 반환함
+  return class {
+    sayHi() {
+      alert(phrase);
+    };
+  };
+}
+
+// 새로운 클래스를 만듦
+let User = makeClass("Hello");
+
+new User().sayHi(); // Hello
+```
+
+
+
+#### getter와 setter
+
+리터럴을 사용해 만든 객체처럼 클래스도 getter나 setter, 계산된 프로퍼티(computed property)를 포함할 수 있다.
+
+`get`과`set`을 이용해 `user.name`을 조작할 수 있게 해보자.
+
+```javascript
+class User {
+
+  constructor(name) {
+    // setter를 활성화한다.
+    this.name = name;
+  }
+
+  get name() {
+    return this._name;
+  }
+
+  set name(value) {
+    if (value.length < 4) {
+      alert("이름이 너무 짧습니다.");
+      return;
+    }
+    this._name = value;
+  }
+
+}
+
+let user = new User("John");
+alert(user.name); // John
+
+user = new User(""); // 이름이 너무 짧습니다.
+```
+
+이런 방법으로 클래스를 선언하면 `User.prototype`에 getter와 setter가 만들어지므로 get과 set을 사용할 수 있다.
+
+
+
+#### 계산된 메서드 이름
+
+대괄호 `[...]`를 이용해 계산된 메서드 이름(computed method name)을 만드는 예시를 살펴보자.
+
+```javascript
+class User {
+
+  ['say' + 'Hi']() {
+    alert("Hello");
+  }
+
+}
+
+new User().sayHi();
+```
+
+계산된 메서드 이름은 리터럴 객체와 유사한 형태를 띠기 때문에 사용법을 외우기 쉽다는 장점이 있다.
+
+
+
+#### 클래스 필드
+
+**구식 브라우저에선 폴리필이 필요할 수 있다.**
+
+클래스 필드는 근래에 더해진 기능인데, 지금까지 살펴본 예시엔 메서드가 하나만 있었다.
+
+'클래스 필드(class field)'라는 문법을 사용하면 어떤 종류의 프로퍼티도 클래스에 추가할 수 있다.
+
+클래스 `User`에 `name` 프로퍼티를 추가해보자.
+
+```javascript
+class User {
+  name = "John";
+
+  sayHi() {
+    alert(`Hello, ${this.name}!`);
+  }
+}
+
+new User().sayHi(); // Hello, John!
+```
+
+클래스를 정의할 때 '<프로퍼티 이름> = <값>'을 써주면 간단히 클래스 필드를 만들 수 있다.
+
+클래스 필드의 중요한 특징 중 하나는 `User.prototype`이 아닌 개별 객체에만 클래스 필드가 설정된다는 점이다.
+
+```javascript
+class User {
+  name = "John";
+}
+
+let user = new User();
+alert(user.name); // John
+alert(User.prototype.name); // undefined
+```
+
+아울러 클래스 필드엔 복잡한 표현식이나 함수 호출 결과를 사용할 수 있다.
+
+```javascript
+class User {
+  name = prompt("이름을 알려주세요.", "보라");
+}
+
+let user = new User();
+alert(user.name); // 보라
+```
+
+### 
+
+#### 클래스 필드로 바인딩 된 메서드 만들기
+
+[함수 바인딩](https://ko.javascript.info/bind) 챕터에서 살펴본 것처럼 자바스크립트의 함수는 동적인 `this`를 갖는다.
+
+따라서 객체 메서드를 여기저기 전달해 전혀 다른 컨텍스트에서 호출하게 되면 `this`는 원래 객체를 참조하지 않는다.
+
+관련 예시를 살펴보자. 예시를 실행하면 `undefined`가 출력된다.
+
+```javascript
+class Button {
+  constructor(value) {
+    this.value = value;
+  }
+
+  click() {
+    alert(this.value);
+  }
+}
+
+let button = new Button("hello");
+
+setTimeout(button.click, 1000); // undefined
+```
+
+이렇게 `this`의 컨텍스트를 알 수 없게 되는 문제를 '잃어버린 `this`(losing this)'라고 한다.
+
+문제를 해결하기 위해 두 개의 방법을 사용할 수 있는데 [함수 바인딩](https://ko.javascript.info/bind)에서 이 방법에 대해 살펴본 바 있다.
+
+1. `setTimeout(() => button.click(), 1000)` 같이 래퍼 함수를 전달하기
+2. 생성자 안 등에서 메서드를 객체에 바인딩하기
+
+클래스 필드는 또 다른 훌륭한 방법을 제공한다.
+
+```javascript
+class Button {
+  constructor(value) {
+    this.value = value;
+  }
+  click = () => {
+    alert(this.value);
+  }
+}
+
+let button = new Button("hello");
+
+setTimeout(button.click, 1000); // hello
+```
+
+클래스 필드 `click = () => {...}`는 각 `Button` 객체마다 독립적인 함수를 만들고 함수의 `this`를 해당 객체에 바인딩시켜준다. 따라서 개발자는 `button.click`을 아무 곳에나 전달할 수 있고, `this`엔 항상 의도한 값이 들어가게 된다.
+
+클래스 필드의 이런 기능은 브라우저 환경에서 메서드를 이벤트 리스너로 설정해야 할 때 특히 유용하다.
+
