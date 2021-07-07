@@ -861,3 +861,268 @@ new User().sayHi(); // Hello
 
 이 방법은 조건에 따라 다른 클래스를 상속받고 싶을 때 유용하다. 조건에 따라 다른 클래스를 반환하는 함수를 만들고, 함수 호출 결과를 상속받게 하면 된다.
 
+
+
+#### 메서드 오버라이딩
+
+이제 한발 더 나아가 메서드를 오버라이딩 해보자. 특별한 사항이 없으면 `class Rabbit`은 `class Animal`에 있는 메서드를 ‘그대로’ 상속받는다.
+
+그런데 `Rabbit`에서 `stop()` 등의 메서드를 자체적으로 정의하면, 상속받은 메서드가 아닌 자체 메서드가 사용된다.
+
+```javascript
+class Rabbit extends Animal {
+  stop() {
+    // rabbit.stop()을 호출할 때
+    // Animal의 stop()이 아닌, 이 메서드가 사용된다.
+  }
+}
+```
+
+개발을 하다 보면 부모 메서드 전체를 교체하지 않고, 부모 메서드를 토대로 일부 기능만 변경하고 싶을 때가 생긴다. 부모 메서드의 기능을 확장하고 싶을 때도 있다. 이럴 때 커스텀 메서드를 만들어 작업하게 되는데, 이미 커스텀 메서드를 만들었더라도 이 과정 전·후에 부모 메서드를 호출하고 싶을 때가 있다.
+
+키워드 `super`는 이럴 때 사용한다.
+
+- `super.method(...)`는 부모 클래스에 정의된 메서드, `method`를 호출한다.
+- `super(...)`는 부모 생성자를 호출하는데, 자식 생성자 내부에서만 사용 할 수 있다.
+
+이런 특징을 이용해 토끼가 멈추면 자동으로 숨도록 하는 코드를 만들어보자.
+
+```javascript
+class Animal {
+
+  constructor(name) {
+    this.speed = 0;
+    this.name = name;
+  }
+
+  run(speed) {
+    this.speed = speed;
+    alert(`${this.name}가 속도 ${this.speed}로 달린다.`);
+  }
+
+  stop() {
+    this.speed = 0;
+    alert(`${this.name}가 멈췄다.`);
+  }
+
+}
+
+class Rabbit extends Animal {
+  hide() {
+    alert(`${this.name}가 숨었다!`);
+  }
+
+  stop() {
+    super.stop(); // 부모 클래스의 stop을 호출해 멈추고,
+    this.hide(); // 숨는다.
+  }
+}
+
+let rabbit = new Rabbit("흰 토끼");
+
+rabbit.run(5); // 흰 토끼가 속도 5로 달린다.
+rabbit.stop(); // 흰 토끼가 멈췄다. 흰 토끼가 숨었다!
+```
+
+`Rabbit`은 이제 실행 중간에 부모 클래스에 정의된 메서드 `super.stop()`을 호출하는 `stop`을 가지게 되었다.
+
+**화살표 함수엔 `super`가 없다.**
+
+[화살표 함수 다시 살펴보기](https://ko.javascript.info/arrow-functions)에서 살펴본 바와 같이, 화살표 함수는 `super`를 지원하지 않는다.
+
+`super`에 접근하면 아래 예시와 같이 `super`를 외부 함수에서 가져온다.
+
+```javascript
+class Rabbit extends Animal {
+  stop() {
+    setTimeout(() => super.stop(), 1000); // 1초 후에 부모 stop을 호출한다.
+  }
+}
+```
+
+화살표 함수의 `super`는 `stop()`의 `super`와 같아서 위 예시는 의도한 대로 동작한다. 그렇지만 `setTimeout`안에서 ‘일반’ 함수를 사용했다면 에러가 발생했을 것이다.
+
+```javascript
+// Unexpected super
+setTimeout(function() { super.stop() }, 1000);
+```
+
+
+
+#### 생성자 오버라이딩
+
+생성자 오버라이딩은 좀 더 까다로운데, 지금까진 `Rabbit`에 자체 `constructor`가 없었다.
+
+[명세서](https://tc39.github.io/ecma262/#sec-runtime-semantics-classdefinitionevaluation)에 따르면, 클래스가 다른 클래스를 상속받고 `constructor`가 없는 경우엔 아래처럼 ‘비어있는’ `constructor`가 만들어진다.
+
+```javascript
+class Rabbit extends Animal {
+  // 자체 생성자가 없는 클래스를 상속받으면 자동으로 만들어짐
+  constructor(...args) {
+    super(...args);
+  }
+}
+```
+
+보시다시피 생성자는 기본적으로 부모 `constructor`를 호출한다. 이때 부모 `constructor`에도 인수를 모두 전달한다. 클래스에 자체 생성자가 없는 경우엔 이런 일이 모두 자동으로 일어난다.
+
+이제 `Rabbit`에 커스텀 생성자를 추가해보고, 커스텀 생성자에서 `name`과 `earLength`를 지정해보자.
+
+```javascript
+class Animal {
+  constructor(name) {
+    this.speed = 0;
+    this.name = name;
+  }
+  // ...
+}
+
+class Rabbit extends Animal {
+
+  constructor(name, earLength) {
+    this.speed = 0;
+    this.name = name;
+    this.earLength = earLength;
+  }
+
+  // ...
+}
+
+// 동작하지 않습니다!
+let rabbit = new Rabbit("흰 토끼", 10); // ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
+```
+
+에러가 발생하며, 토끼를 만들 수 없다. 무엇이 잘못된 걸까?
+
+
+
+- **상속 클래스의 생성자에선 반드시 `super(...)`를 호출해야 하는데, `super(...)`를 호출하지 않아 에러가 발생했다. `super(...)`는 `this`를 사용하기 전에 반드시 호출해야 한다.**
+
+그런데 왜 `super(...)`를 호출해야 하는 걸까?
+
+당연히 이유가 있다. 상속 클래스의 생성자가 호출될 때 어떤 일이 일어나는지 알아보며 이유를 찾아보자.
+
+자바스크립트는 '상속 클래스의 생성자 함수(derived constructor)'와 그렇지 않은 생성자 함수를 구분한다. 상속 클래스의 생성자 함수엔 특수 내부 프로퍼티인 `[[ConstructorKind]]:"derived"`가 이름표처럼 붙는다.
+
+일반 클래스의 생성자 함수와 상속 클래스의 생성자 함수 간 차이는 `new`와 함께 드러난다.
+
+- 일반 클래스가 `new`와 함께 실행되면, 빈 객체가 만들어지고 `this`에 이 객체를 할당한다.
+- 반면, 상속 클래스의 생성자 함수가 실행되면, 일반 클래스에서 일어난 일이 일어나지 않는다. 상속 클래스의 생성자 함수는 빈 객체를 만들고 `this`에 이 객체를 할당하는 일을 부모 클래스의 생성자가 처리해주길 기대한다.
+
+이런 차이 때문에 상속 클래스의 생성자에선 `super`를 호출해 부모 생성자를 실행해 주어야 한다. 그렇지 않으면 `this`가 될 객체가 만들어지지 않아 에러가 발생한다.
+
+아래 예시와 같이 `this`를 사용하기 전에 `super()`를 호출하면 `Rabbit`의 생성자가 제대로 동작한다.
+
+```javascript
+class Animal {
+
+  constructor(name) {
+    this.speed = 0;
+    this.name = name;
+  }
+
+  // ...
+}
+
+class Rabbit extends Animal {
+
+  constructor(name, earLength) {
+    super(name);
+    this.earLength = earLength;
+  }
+
+  // ...
+}
+
+// 이제 에러 없이 동작한다.
+let rabbit = new Rabbit("흰 토끼", 10);
+alert(rabbit.name); // 흰 토끼
+alert(rabbit.earLength); // 10
+```
+
+
+
+#### 클래스 필드 오버라이딩: 까다로운 내용
+
+**사전 공지**
+
+이 내용은 자바스크립트 이외의 언어에서 클래스를 사용해 본 경험이 있다는 전제하에 진행된다.
+
+여기서 다룰 내용을 잘 습득하면 프로그래밍 언어에 대한 통찰력이 높아지고 드물지만, 버그를 만드는 프로그래밍 습관에 대해 알 수 있다.
+
+오버라이딩은 메서드뿐만 아니라 클래스 필드를 대상으로도 적용할 수 있다.
+
+부모 클래스의 생성자 안에 있는 오바라이딩한 필드에 접근하려고 할 때 자바스크립트는 다른 프로그래밍 언어와는 다르게 조금 까다롭지만 말이다.
+
+```javascript
+class Animal {
+  name = 'animal'
+
+  constructor() {
+    alert(this.name); // (*)
+  }
+}
+
+class Rabbit extends Animal {
+  name = 'rabbit';
+}
+
+new Animal(); // animal
+new Rabbit(); // animal
+```
+
+`Animal`을 상속받는 `Rabbit`에서 `name` 필드를 오버라이딩 했다.
+
+`Rabbit`에는 따로 생성자가 정의되어 있지 않기 때문에 `Rabbit`을 사용해 인스턴스를 만들면 `Animal`의 생성자가 호출된다.
+
+흥미로운 점은 `new Animal()`과 `new Rabbit()`을 실행할 때 두 경우 모두 `(*)`로 표시한 줄에 있는 `alert` 함수가 실행되면서 얼럿 창에 `animal`이 출력된다는 점이다.
+
+이를 통해 우리는 **‘부모 생성자는 자식 클래스에서 오버라이딩한 값이 아닌, 부모 클래스 안의 필드 값을 사용한다’** 는 사실을 알 수 있다.
+
+상속을 받고 필드 값을 오버라이딩했는데 새로운 값 대신 부모 클래스 안에 있는 기존 필드 값을 사용하다니 이상하다.
+
+이해를 돕기 위해 이 상황을 메서드와 비교해 생각해보자.
+
+아래 예시에선 필드 `this.name` 대신에 메서드 `this.showName()`을 사용했다.
+
+```javascript
+class Animal {
+  showName() {  // this.name = 'animal' 대신 메서드 사용
+    alert('animal');
+  }
+
+  constructor() {
+    this.showName(); // alert(this.name); 대신 메서드 호출
+  }
+}
+
+class Rabbit extends Animal {
+  showName() {
+    alert('rabbit');
+  }
+}
+
+new Animal(); // animal
+new Rabbit(); // rabbit
+```
+
+필드를 오버라이딩한 위쪽 예시와 결과가 다르다.
+
+위와 같이 자식 클래스에서 부모 생성자를 호출하면 오버라이딩한 메서드가 실행되어야 한다. 이게 우리가 원하던 결과이기 때문이다.
+
+그런데 클래스 필드는 자식 클래스에서 필드를 오버라이딩해도 부모 생성자가 오버라이딩한 필드 값을 사용하지 않는다. 부모 생성자는 항상 부모 클래스에 있는 필드의 값을 사용한다.
+
+왜 이런 차이가 있을까?
+
+이유는 필드 초기화 순서 때문이다. 클래스 필드는 다음과 같은 규칙에 따라 초기화 순서가 달라진다.
+
+- 아무것도 상속받지 않는 베이스 클래스는 생성자 실행 이전에 초기화됨
+- 부모 클래스가 있는 경우엔 `super()` 실행 직후에 초기화됨
+
+위 예시에서 `Rabbit`은 하위 클래스이고 `constructor()`가 정의되어 있지 않다. 이런 경우 앞서 설명한 바와 같이 생성자는 비어있는데 그 안에 `super(...args)`만 있다고 보면 된다.
+
+따라서 `new Rabbit()`을 실행하면 `super()`가 호출되고 그 결과 부모 생성자가 실행된다. 그런데 이때 하위 클래스 필드 초기화 순서에 따라 하위 클래스 `Rabbit`의 필드는 `super()` 실행 후에 초기화된다. 부모 생성자가 실행되는 시점에 `Rabbit`의 필드는 아직 존재하지 않다. 이런 이유로 필드를 오버라이딩 했을 때 `Animal`에 있는 필드가 사용된 것이다.
+
+이렇게 자바스크립트는 오버라이딩시 필드와 메서드의 동작 방식이 미묘하게 다른데 다행히도 이런 문제는 오버라이딩한 필드를 부모 생성자에서 사용할 때만 발생한다. 이런 차이가 왜 발생하는지 모르면 결과를 해석할 수 없는 상황이 발생하기 때문에 별도의 공간을 만들어 필드 오버라이딩시 내부에서 벌어지는 일에 대해 자세히 알아보았다.
+
+개발하다가 필드 오버라이딩이 문제가 되는 상황이 발생하면 필드 대신 메서드를 사용하거나 getter나 setter를 사용해 해결하면 된다.
